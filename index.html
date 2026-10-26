@@ -4,85 +4,162 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Американский учёт</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#1f5f8b">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Учёт США">
 <style>
+@font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/spectral-cyrillic-600-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/spectral-latin-600-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 700; src:url(fonts/spectral-cyrillic-700-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 700; src:url(fonts/spectral-latin-700-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 400; src:url(fonts/golos-text-cyrillic-400-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 400; src:url(fonts/golos-text-latin-400-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 500; src:url(fonts/golos-text-cyrillic-500-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 500; src:url(fonts/golos-text-latin-500-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/golos-text-cyrillic-600-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'Golos Text'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/golos-text-latin-600-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 500; src:url(fonts/ibm-plex-mono-cyrillic-500-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-display: swap; font-weight: 500; src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
 :root{
-  --bg:#f3f6fa; --card:#fff; --ink:#1c2733; --muted:#5d6b7a; --line:#d9e2ec;
-  --blue:#1f5f8b; --blue-l:#e3eef7; --ok:#1e7a46; --ok-l:#e5f4ec; --bad:#b3261e; --bad-l:#fbe9e7;
-  --t-asset:#e3eef7; --t-liab:#fdeede; --t-eq:#ece6f7; --t-rev:#e5f4ec; --t-exp:#fbe9e7;
+  --ground:#F4F7FA; --card:#fff; --soft:#F7FAFC;
+  --navy:#28425C; --navy2:#1E3348; --accent:#3E6B8F; --accent-soft:#E4EDF5;
+  --ochre:#B08347; --ochre-soft:#F6EEE1;
+  --ink:#22303F; --ink2:#4A5D71; --ink3:#7C8DA0; --line:#D9E2EA; --line2:#E8EEF4;
+  --ok:#4B7F62; --ok-soft:#E6F0EA; --bad:#A85147; --bad-soft:#F8ECE5;
+  --t-asset:#E4EDF5; --t-liab:#F6EEE1; --t-eq:#ECE8F4; --t-rev:#E6F0EA; --t-exp:#F8ECE5;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;padding-bottom:76px}
-header{background:var(--blue);color:#fff;padding:14px 16px}
-header h1{margin:0;font-size:19px}
-header .sub{font-size:13px;opacity:.9;margin-top:2px}
-main{max-width:680px;margin:0 auto;padding:12px}
-h2{font-size:19px;margin:6px 0 12px}
-h3{font-size:16px;margin:18px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
-.muted{color:var(--muted);font-size:14px}
-.tag{display:inline-block;font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-l);border-radius:6px;padding:2px 8px;margin-bottom:6px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
-th{background:#f7f9fc;font-weight:600}
-.en{font-weight:600}
-.tr{color:var(--blue)}
-.btn{border:none;border-radius:10px;background:var(--blue);color:#fff;font-size:15px;padding:10px 14px;cursor:pointer}
-.btn.light{background:var(--blue-l);color:var(--blue)}
-.btn.small{font-size:13px;padding:7px 10px}
+body{color:var(--ink);font-family:'Golos Text',system-ui,sans-serif;font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  background:var(--ground);padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+body:before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(circle at 8% 6%,rgba(62,107,143,.14),transparent 32%),
+             radial-gradient(circle at 92% 30%,rgba(176,131,71,.10),transparent 30%),
+             linear-gradient(160deg,#F7FAFC 0%,#F1F5F9 55%,#F6F4EF 100%)}
+h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:600;margin:0;text-wrap:balance}
+button,input,select,textarea{font-family:inherit;color:inherit}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+
+/* Шапка */
+.appbar{position:sticky;top:0;z-index:40;color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 14px;
+  background:radial-gradient(circle at 86% -40%,rgba(255,255,255,.22),transparent 42%),linear-gradient(120deg,#22394F 0%,#28425C 45%,#3E6B8F 100%);
+  box-shadow:0 10px 28px rgba(30,51,72,.22)}
+.appbar .top{display:flex;align-items:center;gap:11px}
+.appbar svg{width:34px;height:34px;flex:none;filter:drop-shadow(0 3px 6px rgba(10,20,32,.35))}
+.appbar h1{font-size:20px;line-height:1.15;color:#fff}
+.appbar .sub{font-size:12.5px;color:rgba(220,230,240,.85);margin-top:1px}
+.appbar .saved{margin-left:auto;font-size:11.5px;color:rgba(220,230,240,.85);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.appbar .saved i{width:7px;height:7px;border-radius:50%;background:#7FB795;box-shadow:0 0 0 3px rgba(127,183,149,.18)}
+
+main{max-width:680px;margin:0 auto;padding:16px 14px 10px}
+h2{font-size:22px;margin:2px 2px 14px;color:var(--navy)}
+h3{font-size:17px;margin:20px 2px 10px;color:var(--navy)}
+
+/* Карточки: перелив сверху вниз, светлая кромка, три ступени тени */
+.card{background:linear-gradient(180deg,#FFFFFF 0%,#FBFCFE 100%);border:1px solid var(--line2);border-radius:20px;padding:16px 16px;margin-bottom:12px;
+  box-shadow:0 1px 2px rgba(28,43,58,.04),0 10px 26px -14px rgba(28,43,58,.22),inset 0 1px 0 rgba(255,255,255,.95);
+  animation:rise .38s ease both}
+.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.16s}.card:nth-child(6){animation-delay:.2s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:18px 18px 16px;margin-bottom:14px;color:#fff;
+  background:linear-gradient(125deg,#28425C 0%,#3E6B8F 60%,#5A86A8 100%);box-shadow:0 14px 32px rgba(30,51,72,.24)}
+.hero:before{content:'';position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 65%)}
+.hero .k{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#E9D2A8}
+.hero .t{font-family:'Spectral',serif;font-size:22px;font-weight:600;line-height:1.2;margin-top:4px}
+.hero .bar{height:7px;border-radius:7px;background:rgba(255,255,255,.18);margin-top:14px;overflow:hidden}
+.hero .bar i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#D9B676,#B08347)}
+.hero .p{font-size:12.5px;color:rgba(230,238,245,.9);margin-top:6px}
+.muted{color:var(--ink3);font-size:14px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:8px}
+.en{font-weight:600;color:var(--ink)}
+.tr{color:var(--accent);font-size:14.5px}
+.card p{margin:8px 0}
+
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px;border-radius:12px;overflow:hidden;border:1px solid var(--line2)}
+th,td{padding:8px 9px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line2)}
+tr:last-child td{border-bottom:0}
+th{background:var(--soft);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+td:last-child{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink2);word-spacing:-2px}
+th:nth-child(1),td:nth-child(1){width:36%}th:nth-child(2),td:nth-child(2){width:30%}
+.t-asset{background:var(--t-asset)} .t-liab{background:var(--t-liab)} .t-eq{background:var(--t-eq)} .t-rev{background:var(--t-rev)} .t-exp{background:var(--t-exp)}
+
+/* Кнопки */
+.btn{border:0;border-radius:14px;cursor:pointer;font-weight:500;font-size:15px;padding:11px 16px;color:#fff;
+  background:linear-gradient(110deg,#28425C,#3E6B8F);box-shadow:0 8px 18px rgba(30,51,72,.22),inset 0 1px 0 rgba(255,255,255,.18);
+  transition:transform .16s ease,box-shadow .16s ease}
+.btn:active{transform:scale(.985)}
+.btn.light{background:linear-gradient(180deg,#FFFFFF,#F3F7FB);color:var(--navy);border:1px solid var(--line);box-shadow:0 2px 6px rgba(28,43,58,.06)}
+.btn.gold{background:linear-gradient(110deg,#B08347,#C99A5B);box-shadow:0 8px 18px rgba(150,105,50,.24)}
+.btn.small{font-size:13px;padding:7px 11px;border-radius:11px}
 .btn:disabled{opacity:.5}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.word{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+
+/* Слова */
+.word{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line2);padding:11px 4px;border-radius:12px;transition:background .2s}
 .word:last-child{border-bottom:none}
 .word .txt{flex:1;min-width:0}
-.word.playing{background:var(--blue-l);border-radius:8px}
+.word.playing{background:var(--ochre-soft)}
 .word .btns{display:flex;flex-direction:column;gap:6px}
-.block{border-left:4px solid var(--blue);padding:2px 0 2px 12px;margin:8px 0}
-.block .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-.op{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
-.op.ok{border-color:var(--ok);background:var(--ok-l)}
-.op.bad{border-color:var(--bad);background:var(--bad-l)}
-.op .q{font-weight:600;margin-bottom:8px}
-.fld{display:grid;grid-template-columns:52px 1fr;gap:6px 8px;align-items:center;margin-bottom:6px}
-.fld label{font-size:14px;color:var(--muted)}
-select,input[type=text],input[type=number]{width:100%;font-size:16px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
-.fb{font-size:14px;margin-top:8px}
+
+/* Блоки «что сделать / данные / зачем» */
+.block{border-left:3px solid var(--ochre);padding:1px 0 1px 12px;margin:9px 0}
+.block .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--ochre);margin-bottom:1px}
+
+/* Задание */
+.op{border:1px solid var(--line2);border-radius:16px;padding:13px;margin-bottom:10px;background:linear-gradient(180deg,#fff,#FAFCFE);box-shadow:0 1px 2px rgba(28,43,58,.04);animation:rise .38s ease both}
+.op.ok{border-color:#B9D3C3;background:linear-gradient(180deg,#F3F9F5,#E9F3ED)}
+.op.bad{border-color:#E3BFB8;background:linear-gradient(180deg,#FCF5F2,#F8ECE5)}
+.op .q{font-weight:600;margin-bottom:9px;line-height:1.4}
+.op .q b{font-family:'IBM Plex Mono',monospace;color:var(--ochre);margin-right:4px}
+.fld{display:grid;grid-template-columns:56px 1fr;gap:6px 8px;align-items:center;margin-bottom:7px}
+.fld label{font-size:13px;color:var(--ink3);font-weight:500}
+select,input[type=text],input[type=number]{width:100%;font-size:16px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,#7C8DA0 50%),linear-gradient(135deg,#7C8DA0 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+input[type=number]{font-family:'IBM Plex Mono',monospace}
+select:focus,input:focus{outline:3px solid rgba(62,107,143,.18);border-color:var(--accent)}
+.fb{font-size:14px;margin-top:9px;line-height:1.45}
 .fb b{display:block}
-.legend span{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;margin:0 4px 4px 0}
-.t-asset{background:var(--t-asset)} .t-liab{background:var(--t-liab)} .t-eq{background:var(--t-eq)} .t-rev{background:var(--t-rev)} .t-exp{background:var(--t-exp)}
-.lesson-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0;cursor:pointer}
+.score{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--ochre)}
+
+.legend span{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;margin:0 5px 6px 0;color:var(--ink2)}
+.acc{border-radius:18px;padding:14px 15px;margin-bottom:10px;border:1px solid rgba(255,255,255,.7);box-shadow:0 1px 2px rgba(28,43,58,.04),0 8px 20px -14px rgba(28,43,58,.22),inset 0 1px 0 rgba(255,255,255,.8);animation:rise .38s ease both}
+.acc .num{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-weight:600}
+
+.lesson-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line2);padding:11px 2px;cursor:pointer}
 .lesson-item:last-child{border-bottom:none}
-.st{font-size:12px;font-weight:600;border-radius:6px;padding:3px 8px;white-space:nowrap}
-.st.cur{background:var(--blue-l);color:var(--blue)} .st.done{background:var(--ok-l);color:var(--ok)} .st.wait{background:#eef1f4;color:var(--muted)}
-.note{background:#fff8e6;border:1px solid #f0dca8;border-radius:10px;padding:10px 12px;font-size:14px;color:#5a4a1c;margin-bottom:12px}
-.msg{font-size:14px;margin-top:8px}
+.lesson-item .n{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-weight:600;margin-right:8px}
+.st{font-size:11.5px;font-weight:600;border-radius:20px;padding:3px 10px;white-space:nowrap}
+.st.cur{background:var(--accent-soft);color:var(--accent)} .st.done{background:var(--ok-soft);color:var(--ok)} .st.wait{background:#EEF2F6;color:var(--ink3)}
+.note{background:linear-gradient(115deg,#FBF5EA,#F6EEE1);border:1px solid #EAD9BC;border-radius:16px;padding:11px 13px;font-size:14px;color:#7A5A2C;margin-bottom:12px}
+.msg{font-size:14px;margin-top:9px}
 .msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
-nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;border:none;background:none;padding:8px 2px 10px;font-size:11px;color:var(--muted);cursor:pointer}
-nav button .ic{display:block;font-size:19px;line-height:1.2}
-nav button.on{color:var(--blue);font-weight:700}
+
+/* Нижние вкладки: стеклянный фон, активная — объёмной плашкой */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:2px;padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+  background:rgba(250,252,254,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line2);box-shadow:0 -10px 28px rgba(28,43,58,.08)}
+nav button{flex:1;border:0;background:none;padding:6px 1px 5px;font-size:11.5px;font-weight:500;color:var(--ink2);border-radius:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .16s,color .16s}
+nav button .ic{font-size:19px;line-height:1;opacity:.75}
+nav button.on{color:var(--navy);font-weight:600;background:linear-gradient(180deg,#FFFFFF,#EAF1F7);box-shadow:0 4px 12px rgba(30,51,72,.12),inset 0 1px 0 #fff}
+nav button.on .ic{opacity:1;color:var(--ochre)}
 .hidden{display:none}
-textarea.copybox{width:100%;height:120px;font-size:13px;margin-top:8px}
+textarea.copybox{width:100%;height:120px;font-size:13px;margin-top:8px;border-radius:12px;border:1px solid var(--line);padding:8px}
+
 </style>
 </head>
 <body>
-<header>
-  <h1>Американский учёт</h1>
-  <div class="sub" id="hdrSub">Урок 1</div>
-</header>
+<header class="appbar"><div class="top">
+  <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0DAA8"/><stop offset="1" stop-color="#B08347"/></linearGradient></defs>
+  <rect x="9" y="16" width="46" height="7" rx="3.5" fill="url(#gg)"/><rect x="28.5" y="16" width="7" height="38" rx="3.5" fill="url(#gg)"/>
+  <text x="18" y="12" font-family="Golos Text,sans-serif" font-size="10" font-weight="700" fill="#F0DAA8" text-anchor="middle">Dr</text>
+  <text x="46" y="12" font-family="Golos Text,sans-serif" font-size="10" font-weight="700" fill="#F0DAA8" text-anchor="middle">Cr</text></svg>
+  <div><h1>Американский учёт</h1><div class="sub" id="hdrSub">Урок 1</div></div>
+  <div class="saved"><i></i>Сохранено</div>
+</div></header>
 <main id="view"></main>
 <nav id="nav">
-  <button data-v="plan"><span class="ic">☰</span>Уроки</button>
-  <button data-v="theory"><span class="ic">📖</span>Урок</button>
-  <button data-v="words"><span class="ic">🔊</span>Слова</button>
+  <button data-v="plan"><span class="ic">▦</span>Уроки</button>
+  <button data-v="theory"><span class="ic">✦</span>Урок</button>
+  <button data-v="words"><span class="ic">♪</span>Слова</button>
   <button data-v="task"><span class="ic">✎</span>Задание</button>
   <button data-v="ref"><span class="ic">⇄</span>Счета</button>
-  <button data-v="copy"><span class="ic">💾</span>Копия</button>
+  <button data-v="copy"><span class="ic">⤓</span>Копия</button>
 </nav>
 
 <script src="exceljs.min.js"></script>
@@ -221,7 +298,7 @@ let view = "theory";
 function go(v){
   view = v;
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
-  document.getElementById("hdrSub").textContent = L().title;
+  document.getElementById("hdrSub").textContent = `Урок ${S.cur+1} из ${TOTAL_LESSONS} · пройдено ${Object.keys(S.done).length}`;
   stopAll = true; if(synth) synth.cancel();
   ({plan:rPlan, theory:rTheory, words:rWords, task:rTask, ref:rRef, copy:rCopy})[v]();
   window.scrollTo(0,0);
@@ -238,7 +315,7 @@ function rPlan(){
     else if(les){ st = i===S.cur ? "текущий" : "открыт"; cls="cur"; }
     else { st="появится позже"; cls="wait"; }
     const name = les ? les.title : `Урок ${i+1}`;
-    h += `<div class="lesson-item" data-i="${les?i:""}"><span>${esc(name)}</span><span class="st ${cls}">${st}</span></div>`;
+    h += `<div class="lesson-item" data-i="${les?i:""}"><span><span class="n">${String(i+1).padStart(2,"0")}</span>${esc(les?les.title.replace(/^Урок \d+\. /,""):"Урок "+(i+1))}</span><span class="st ${cls}">${st}</span></div>`;
   }
   h += `</div><p class="muted">Новый урок появляется после проверки предыдущего. Уроки 1–10 — основы учёта, 11–20 — типовые операции и отчёты.</p>`;
   V.innerHTML = h;
@@ -247,7 +324,9 @@ function rPlan(){
 
 /* ===================== ВКЛАДКА: УРОК ===================== */
 function rTheory(){
-  V.innerHTML = `<h2>${esc(L().title)}</h2>${L().theory}
+  const done=Object.keys(S.done).length, pct=Math.round(done/TOTAL_LESSONS*100);
+  V.innerHTML = `<div class="hero"><div class="k">Урок ${S.cur+1} из ${TOTAL_LESSONS}</div><div class="t">${esc(L().title.replace(/^Урок \d+\. /,""))}</div>
+  <div class="bar"><i style="width:${Math.max(pct,3)}%"></i></div><div class="p">Пройдено уроков: ${done} из ${TOTAL_LESSONS}</div></div>${L().theory}
   <div class="row"><button class="btn" id="toWords">Дальше: слова</button></div>`;
   document.getElementById("toWords").onclick=()=>go("words");
 }
@@ -298,7 +377,7 @@ function rTask(){
   <h3>А. Проводки</h3>`;
   les.entries.forEach((e,i)=>{
     const a=A.a[i]||{}, st = A.checked ? (checkEntry(e,a)?"ok":"bad") : "";
-    h += `<div class="op ${st}"><div class="q">${i+1}. ${esc(e.q)}</div>
+    h += `<div class="op ${st}"><div class="q"><b>${i+1}</b>${esc(e.q)}</div>
       <div class="fld"><label>Дт</label><select data-a="${i}" data-f="dr">${opt(a.dr)}</select></div>
       <div class="fld"><label>Кт</label><select data-a="${i}" data-f="cr">${opt(a.cr)}</select></div>
       <div class="fld"><label>Сумма</label><input type="number" inputmode="numeric" data-a="${i}" data-f="sum" value="${a.sum??""}"></div>`;
@@ -320,7 +399,7 @@ function rTask(){
   <div id="res"></div>`;
   if(A.checked){
     const okA = les.entries.filter((e,i)=>checkEntry(e,A.a[i])).length, okB = les.transl.filter((t,i)=>checkTr(t,A.b[i])).length;
-    h += `<div class="card" style="margin-top:12px"><b>Результат:</b> проводки ${okA} из ${les.entries.length}, перевод ${okB} из ${les.transl.length}.
+    h += `<div class="card" style="margin-top:12px"><div class="tag">Результат</div><div class="row" style="gap:22px"><div><div class="score">${okA}/${les.entries.length}</div><div class="muted">проводки</div></div><div><div class="score">${okB}/${les.transl.length}</div><div class="muted">перевод</div></div></div>
       <p class="muted">Для подробного разбора откройте вкладку «Копия», нажмите «Скопировать ответы для проверки», вставьте в чат и напишите «проверь».</p></div>`;
   }
   V.innerHTML = h;
@@ -355,11 +434,11 @@ function rRef(){
   <p class="muted">Справочник пополняется с каждым уроком. Сейчас в нём ${list.length} счетов.</p>`;
   ["asset","liab","eq","rev","exp"].forEach(tp=>{
     list.filter(a=>a[3]===tp).forEach(a=>{
-      h += `<div class="card ${TYPES[tp].cls}" style="border:none">
+      h += `<div class="acc ${TYPES[tp].cls}">
         <div class="row" style="justify-content:space-between"><div><div class="en">${esc(a[0])}</div><div class="tr">${esc(a[1])}</div></div>
         <button class="btn small" data-say="${esc(a[0])}">▶ Слушать</button></div>
         <div style="margin-top:6px">${esc(a[2])}</div>
-        <div class="muted" style="margin-top:4px"><b>${TYPES[tp].ru}</b> · российский счёт: <b>${esc(a[4])}</b></div>
+        <div class="muted" style="margin-top:4px"><b>${TYPES[tp].ru}</b> · российский счёт: <span class="num">${esc(a[4])}</span></div>
         <div class="muted" style="margin-top:4px">${esc(a[5])}</div></div>`;
     });
   });
