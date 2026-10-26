@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Американский учёт</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#1f5f8b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Учёт США">
+<style>
+:root{
+  --bg:#f3f6fa; --card:#fff; --ink:#1c2733; --muted:#5d6b7a; --line:#d9e2ec;
+  --blue:#1f5f8b; --blue-l:#e3eef7; --ok:#1e7a46; --ok-l:#e5f4ec; --bad:#b3261e; --bad-l:#fbe9e7;
+  --t-asset:#e3eef7; --t-liab:#fdeede; --t-eq:#ece6f7; --t-rev:#e5f4ec; --t-exp:#fbe9e7;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;padding-bottom:76px}
+header{background:var(--blue);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:19px}
+header .sub{font-size:13px;opacity:.9;margin-top:2px}
+main{max-width:680px;margin:0 auto;padding:12px}
+h2{font-size:19px;margin:6px 0 12px}
+h3{font-size:16px;margin:18px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.muted{color:var(--muted);font-size:14px}
+.tag{display:inline-block;font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-l);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+th{background:#f7f9fc;font-weight:600}
+.en{font-weight:600}
+.tr{color:var(--blue)}
+.btn{border:none;border-radius:10px;background:var(--blue);color:#fff;font-size:15px;padding:10px 14px;cursor:pointer}
+.btn.light{background:var(--blue-l);color:var(--blue)}
+.btn.small{font-size:13px;padding:7px 10px}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.word{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}
+.word:last-child{border-bottom:none}
+.word .txt{flex:1;min-width:0}
+.word.playing{background:var(--blue-l);border-radius:8px}
+.word .btns{display:flex;flex-direction:column;gap:6px}
+.block{border-left:4px solid var(--blue);padding:2px 0 2px 12px;margin:8px 0}
+.block .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.op{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+.op.ok{border-color:var(--ok);background:var(--ok-l)}
+.op.bad{border-color:var(--bad);background:var(--bad-l)}
+.op .q{font-weight:600;margin-bottom:8px}
+.fld{display:grid;grid-template-columns:52px 1fr;gap:6px 8px;align-items:center;margin-bottom:6px}
+.fld label{font-size:14px;color:var(--muted)}
+select,input[type=text],input[type=number]{width:100%;font-size:16px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.fb{font-size:14px;margin-top:8px}
+.fb b{display:block}
+.legend span{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;margin:0 4px 4px 0}
+.t-asset{background:var(--t-asset)} .t-liab{background:var(--t-liab)} .t-eq{background:var(--t-eq)} .t-rev{background:var(--t-rev)} .t-exp{background:var(--t-exp)}
+.lesson-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0;cursor:pointer}
+.lesson-item:last-child{border-bottom:none}
+.st{font-size:12px;font-weight:600;border-radius:6px;padding:3px 8px;white-space:nowrap}
+.st.cur{background:var(--blue-l);color:var(--blue)} .st.done{background:var(--ok-l);color:var(--ok)} .st.wait{background:#eef1f4;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f0dca8;border-radius:10px;padding:10px 12px;font-size:14px;color:#5a4a1c;margin-bottom:12px}
+.msg{font-size:14px;margin-top:8px}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:none;background:none;padding:8px 2px 10px;font-size:11px;color:var(--muted);cursor:pointer}
+nav button .ic{display:block;font-size:19px;line-height:1.2}
+nav button.on{color:var(--blue);font-weight:700}
+.hidden{display:none}
+textarea.copybox{width:100%;height:120px;font-size:13px;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Американский учёт</h1>
+  <div class="sub" id="hdrSub">Урок 1</div>
+</header>
+<main id="view"></main>
+<nav id="nav">
+  <button data-v="plan"><span class="ic">☰</span>Уроки</button>
+  <button data-v="theory"><span class="ic">📖</span>Урок</button>
+  <button data-v="words"><span class="ic">🔊</span>Слова</button>
+  <button data-v="task"><span class="ic">✎</span>Задание</button>
+  <button data-v="ref"><span class="ic">⇄</span>Счета</button>
+  <button data-v="copy"><span class="ic">💾</span>Копия</button>
+</nav>
+
+<script src="exceljs.min.js"></script>
+<script>
+/* ===================== СОДЕРЖАНИЕ КУРСА ===================== */
+
+const TYPES = {
+  asset:{ru:"Актив", cls:"t-asset", xl:"FFE3EEF7"},
+  liab: {ru:"Обязательство", cls:"t-liab", xl:"FFFDEEDE"},
+  eq:   {ru:"Капитал", cls:"t-eq", xl:"FFECE6F7"},
+  rev:  {ru:"Доход", cls:"t-rev", xl:"FFE5F4EC"},
+  exp:  {ru:"Расход", cls:"t-exp", xl:"FFFBE9E7"}
+};
+
+/* Справочник счетов: en, транскрипция, перевод, вид, российский счёт, пояснение, урок */
+const ACCOUNTS = [
+  ["Cash","кэш","Деньги (касса и банк)","asset","50, 51, 52","В США касса и расчётный счёт обычно учитываются в одной группе Cash. Отдельный счёт открывают на каждый банковский счёт.",1],
+  ["Accounts Receivable","эка́унтс риси́вэбл","Дебиторская задолженность покупателей","asset","62","Сокращённо A/R. Долг клиентов за отгруженные товары и оказанные услуги.",1],
+  ["Equipment","икви́пмэнт","Оборудование","asset","01","Часть основных средств. Износ учитывается на отдельном счёте, его разберём позже.",1],
+  ["Accounts Payable","эка́унтс пэ́йэбл","Задолженность поставщикам","liab","60","Сокращённо A/P. Наш долг поставщикам и подрядчикам.",1],
+  ["Owner's Equity","о́унэрз э́квити","Вложения собственника","eq","80","Для небольших компаний с одним владельцем. В корпорациях вместо него Common Stock — акционерный капитал.",1],
+  ["Retained Earnings","рите́йнд ё́рнингз","Нераспределённая прибыль","eq","84","Накопленная прибыль прошлых лет за вычетом выплат собственникам.",1],
+  ["Service Revenue","сё́рвис рэ́вэнью","Выручка от услуг","rev","90.1","В РСБУ выручка проходит через счёт 90. В США это сразу отдельный счёт дохода.",1],
+  ["Rent Expense","рэнт икспэ́нс","Расходы на аренду","exp","20, 26, 44","В РСБУ аренда относится на счета затрат по месту возникновения. В США — на отдельный счёт расходов по виду.",1]
+];
+
+const LESSONS = [
+  {
+    id:"l1",
+    title:"Урок 1. Основа американского учёта",
+    theory:`
+<div class="card">
+  <div class="tag">1. Главное равенство</div>
+  <p><span class="en">Assets = Liabilities + Equity</span><br>
+  <span class="tr">э́сэтс = лайэби́литиз + э́квити</span><br>
+  Активы = Обязательства + Капитал</p>
+  <p class="muted">Это то же равенство актива и пассива баланса, что и в РСБУ.</p>
+</div>
+<div class="card">
+  <div class="tag">2. Пять видов счетов</div>
+  <table>
+    <tr><th>Вид</th><th>Перевод</th><th>Аналог в РСБУ</th></tr>
+    <tr class="t-asset"><td><span class="en">Assets</span><br><span class="tr">э́сэтс</span></td><td>Активы</td><td>01, 10, 50, 51, 62</td></tr>
+    <tr class="t-liab"><td><span class="en">Liabilities</span><br><span class="tr">лайэби́литиз</span></td><td>Обязательства</td><td>60, 66, 68, 70</td></tr>
+    <tr class="t-eq"><td><span class="en">Equity</span><br><span class="tr">э́квити</span></td><td>Капитал</td><td>80, 84</td></tr>
+    <tr class="t-rev"><td><span class="en">Revenue</span><br><span class="tr">рэ́вэнью</span></td><td>Доходы</td><td>90.1, 91.1</td></tr>
+    <tr class="t-exp"><td><span class="en">Expenses</span><br><span class="tr">икспэ́нсиз</span></td><td>Расходы</td><td>20, 26, 44, 91.2</td></tr>
+  </table>
+  <p><b>Главное отличие.</b> Доходы и расходы в американском учёте — самостоятельные счета. Они не проходят через 90 и 91, как у нас.</p>
+</div>
+<div class="card">
+  <div class="tag">3. Дебет и кредит</div>
+  <p><span class="en">Debit</span> <span class="tr">(дэ́бит)</span> — левая сторона, <span class="en">Credit</span> <span class="tr">(крэ́дит)</span> — правая. Логика та же, что в РСБУ.</p>
+  <p>Увеличиваются <b>по дебету</b>: Assets, Expenses.<br>
+  Увеличиваются <b>по кредиту</b>: Liabilities, Equity, Revenue.</p>
+  <p class="muted">Подсказка: дебет и кредит в каждой проводке всегда равны по сумме.</p>
+</div>
+<div class="card">
+  <div class="tag">4. Нумерация счетов</div>
+  <p>Единого плана счетов в США нет: каждая компания составляет свой. Обычная практика нумерации:</p>
+  <p>1000 — активы<br>2000 — обязательства<br>3000 — капитал<br>4000 — доходы<br>5000–6000 — расходы</p>
+</div>
+<div class="card">
+  <div class="tag">5. Счета урока</div>
+  <p>Cash, Accounts Receivable, Equipment, Accounts Payable, Owner's Equity, Retained Earnings, Service Revenue, Rent Expense.</p>
+  <p class="muted">Транскрипция, произношение и российские аналоги — во вкладках «Слова» и «Счета».</p>
+</div>`,
+    words:[
+      {g:"Пять видов счетов", w:[["Assets","э́сэтс","активы"],["Liabilities","лайэби́литиз","обязательства"],["Equity","э́квити","капитал"],["Revenue","рэ́вэнью","доходы"],["Expenses","икспэ́нсиз","расходы"]]},
+      {g:"Дебет и кредит", w:[["Debit","дэ́бит","дебет"],["Credit","крэ́дит","кредит"]]},
+      {g:"Счета урока", w:[["Cash","кэш","деньги"],["Accounts Receivable","эка́унтс риси́вэбл","дебиторская задолженность"],["Equipment","икви́пмэнт","оборудование"],["Accounts Payable","эка́унтс пэ́йэбл","задолженность поставщикам"],["Owner's Equity","о́унэрз э́квити","вложения собственника"],["Retained Earnings","рите́йнд ё́рнингз","нераспределённая прибыль"],["Service Revenue","сё́рвис рэ́вэнью","выручка от услуг"],["Rent Expense","рэнт икспэ́нс","расходы на аренду"]]},
+      {g:"Общие слова курса", w:[["Bookkeeping","бу́ккипинг","ведение учёта"],["Accounting","эка́унтинг","бухгалтерский учёт"],["Journal Entry","джё́рнал э́нтри","проводка"]]}
+    ],
+    entries:[
+      {q:"Собственник внёс в компанию $5 000 на банковский счёт.", dr:"Cash", cr:"Owner's Equity", sum:5000,
+       why:"Деньги на счёте — актив, растёт по дебету. Вложения собственника — капитал, растёт по кредиту. Аналог в РСБУ: Дт 51 Кт 75 / 80."},
+      {q:"Куплено офисное оборудование на $1 200, оплата поставщику позже.", dr:"Equipment", cr:"Accounts Payable", sum:1200,
+       why:"Оборудование — актив, растёт по дебету. Долг поставщику — обязательство, растёт по кредиту. Аналог: Дт 08 / 01 Кт 60."},
+      {q:"Оказаны услуги клиенту на $2 000, клиент заплатит позже.", dr:"Accounts Receivable", cr:"Service Revenue", sum:2000,
+       why:"Долг клиента — актив, растёт по дебету. Выручка — доход, растёт по кредиту. Аналог: Дт 62 Кт 90.1."},
+      {q:"Оплачена аренда $800 с банковского счёта.", dr:"Rent Expense", cr:"Cash", sum:800,
+       why:"Расход растёт по дебету. Деньги уменьшаются — актив уменьшается по кредиту. В РСБУ аренда сначала прошла бы через 60 или 76."},
+      {q:"Клиент перечислил долг $2 000.", dr:"Cash", cr:"Accounts Receivable", sum:2000,
+       why:"Деньги пришли — актив растёт по дебету. Долг клиента погашен — актив уменьшается по кредиту. Аналог: Дт 51 Кт 62."}
+    ],
+    transl:[
+      {en:"Assets", keys:["актив"], ans:"активы"},
+      {en:"Liabilities", keys:["обязат"], ans:"обязательства"},
+      {en:"Equity", keys:["капитал"], ans:"капитал"},
+      {en:"Revenue", keys:["доход","выручк"], ans:"доходы, выручка"},
+      {en:"Expenses", keys:["расход","затрат"], ans:"расходы"},
+      {en:"Accounts Receivable", keys:["дебитор"], ans:"дебиторская задолженность"},
+      {en:"Accounts Payable", keys:["кредитор","поставщик"], ans:"кредиторская задолженность поставщикам"},
+      {en:"Retained Earnings", keys:["нераспредел"], ans:"нераспределённая прибыль"}
+    ]
+  }
+];
+const TOTAL_LESSONS = 20;
+
+/* ===================== ХРАНЕНИЕ ===================== */
+const KEY = "amer-uchet-v1";
+let S = {cur:0, answers:{}, done:{}, savedAt:null};
+function load(){ try{ const r = localStorage.getItem(KEY); if(r) S = Object.assign(S, JSON.parse(r)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function ans(lid){ if(!S.answers[lid]) S.answers[lid] = {a:[], b:[], checked:false}; return S.answers[lid]; }
+load();
+if(S.cur >= LESSONS.length) S.cur = LESSONS.length-1;
+
+/* ===================== ЗВУК ===================== */
+const synth = window.speechSynthesis || null;
+let voice = null;
+function pickVoice(){ if(!synth) return; const v = synth.getVoices();
+  voice = v.find(x=>x.lang==="en-US" && /Samantha|Google US English|Aaron|Nicky/i.test(x.name)) || v.find(x=>x.lang==="en-US") || v.find(x=>x.lang && x.lang.startsWith("en")) || null; }
+if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
+let stopAll = false;
+function speak(text, rate, el){
+  return new Promise(res=>{
+    if(!synth){ res(); return; }
+    try{
+      const u = new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=rate; if(voice) u.voice=voice;
+      if(el) el.classList.add("playing");
+      const done=()=>{ if(el) el.classList.remove("playing"); res(); };
+      u.onend=done; u.onerror=done; synth.speak(u);
+    }catch(e){ res(); }
+  });
+}
+
+/* ===================== ВСПОМОГАТЕЛЬНОЕ ===================== */
+const V = document.getElementById("view");
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const accNames = () => ACCOUNTS.filter(a=>a[6] <= S.cur+1).map(a=>a[0]).sort();
+const fmt = n => "$" + Number(n).toLocaleString("ru-RU");
+const L = () => LESSONS[S.cur];
+
+let view = "theory";
+function go(v){
+  view = v;
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
+  document.getElementById("hdrSub").textContent = L().title;
+  stopAll = true; if(synth) synth.cancel();
+  ({plan:rPlan, theory:rTheory, words:rWords, task:rTask, ref:rRef, copy:rCopy})[v]();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+
+/* ===================== ВКЛАДКА: УРОКИ ===================== */
+function rPlan(){
+  let h = `<h2>Уроки</h2><div class="card">`;
+  for(let i=0;i<TOTAL_LESSONS;i++){
+    const les = LESSONS[i];
+    let st, cls;
+    if(les && S.done[les.id]){ st="пройден"; cls="done"; }
+    else if(les){ st = i===S.cur ? "текущий" : "открыт"; cls="cur"; }
+    else { st="появится позже"; cls="wait"; }
+    const name = les ? les.title : `Урок ${i+1}`;
+    h += `<div class="lesson-item" data-i="${les?i:""}"><span>${esc(name)}</span><span class="st ${cls}">${st}</span></div>`;
+  }
+  h += `</div><p class="muted">Новый урок появляется после проверки предыдущего. Уроки 1–10 — основы учёта, 11–20 — типовые операции и отчёты.</p>`;
+  V.innerHTML = h;
+  V.querySelectorAll(".lesson-item").forEach(el=>{ if(el.dataset.i!==""){ el.onclick=()=>{ S.cur=+el.dataset.i; save(); go("theory"); }; }});
+}
+
+/* ===================== ВКЛАДКА: УРОК ===================== */
+function rTheory(){
+  V.innerHTML = `<h2>${esc(L().title)}</h2>${L().theory}
+  <div class="row"><button class="btn" id="toWords">Дальше: слова</button></div>`;
+  document.getElementById("toWords").onclick=()=>go("words");
+}
+
+/* ===================== ВКЛАДКА: СЛОВА ===================== */
+function rWords(){
+  let h = `<h2>Слова урока</h2>
+  <div class="note">Нажмите «Слушать» и повторите слово вслух. Если звука нет — выключите беззвучный режим переключателем на боковой стороне телефона.</div>
+  <div class="row" style="margin-bottom:12px"><button class="btn" id="all">▶ Слушать все</button></div>`;
+  const q=[];
+  L().words.forEach(g=>{
+    h += `<div class="card"><div class="tag">${esc(g.g)}</div>`;
+    g.w.forEach(([en,tr,ru])=>{
+      const id="w"+q.length; q.push([en,id]);
+      h += `<div class="word" id="${id}"><div class="txt"><div class="en">${esc(en)}</div><div class="tr">${esc(tr)}</div><div class="muted">${esc(ru)}</div></div>
+      <div class="btns"><button class="btn small" data-say="${esc(en)}" data-r="0.9" data-el="${id}">▶ Слушать</button><button class="btn small light" data-say="${esc(en)}" data-r="0.55" data-el="${id}">Медленно</button></div></div>`;
+    });
+    h += `</div>`;
+  });
+  if(!synth) h = `<div class="note">Этот браузер не умеет произносить текст. Откройте приложение в Safari или Chrome.</div>` + h;
+  h += `<div class="row"><button class="btn" id="toTask">Дальше: задание</button></div>`;
+  V.innerHTML = h;
+  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ stopAll=true; if(synth) synth.cancel(); speak(b.dataset.say, +b.dataset.r, document.getElementById(b.dataset.el)); });
+  const all = document.getElementById("all");
+  all.onclick = async ()=>{
+    if(all.dataset.run==="1"){ stopAll=true; if(synth) synth.cancel(); return; }
+    stopAll=false; all.dataset.run="1"; all.textContent="■ Остановить"; if(synth) synth.cancel();
+    for(const [en,id] of q){ if(stopAll) break; const el=document.getElementById(id); if(!el) break;
+      el.scrollIntoView({block:"center",behavior:"smooth"}); await speak(en,0.85,el); await new Promise(r=>setTimeout(r,700)); }
+    all.dataset.run="0"; all.textContent="▶ Слушать все";
+  };
+  document.getElementById("toTask").onclick=()=>go("task");
+}
+
+/* ===================== ВКЛАДКА: ЗАДАНИЕ ===================== */
+function checkEntry(e, a){ return a && a.dr===e.dr && a.cr===e.cr && Number(a.sum)===e.sum; }
+function checkTr(t, v){ v=(v||"").toLowerCase().replace(/ё/g,"е"); return t.keys.some(k=>v.includes(k.replace(/ё/g,"е"))); }
+
+function rTask(){
+  const les=L(), A=ans(les.id), names=accNames();
+  const opt = sel => `<option value="">— выберите счёт —</option>` + names.map(n=>`<option ${n===sel?"selected":""}>${esc(n)}</option>`).join("");
+  let h = `<h2>Задание</h2>
+  <div class="card">
+    <div class="block"><div class="lbl">Что сделать</div>Составьте проводки (задание А) и переведите слова (задание Б).</div>
+    <div class="block"><div class="lbl">Данные</div>Счёт дебета и счёт кредита — выбрать из списка.<br>Сумма — числом, без знака доллара.<br>Перевод — своими словами, по-русски.</div>
+    <div class="block"><div class="lbl">Зачем</div>Проверить, что логика дебета и кредита в американском учёте стала привычной.</div>
+  </div>
+  <h3>А. Проводки</h3>`;
+  les.entries.forEach((e,i)=>{
+    const a=A.a[i]||{}, st = A.checked ? (checkEntry(e,a)?"ok":"bad") : "";
+    h += `<div class="op ${st}"><div class="q">${i+1}. ${esc(e.q)}</div>
+      <div class="fld"><label>Дт</label><select data-a="${i}" data-f="dr">${opt(a.dr)}</select></div>
+      <div class="fld"><label>Кт</label><select data-a="${i}" data-f="cr">${opt(a.cr)}</select></div>
+      <div class="fld"><label>Сумма</label><input type="number" inputmode="numeric" data-a="${i}" data-f="sum" value="${a.sum??""}"></div>`;
+    if(A.checked){
+      h += st==="ok" ? `<div class="fb"><b style="color:var(--ok)">Верно.</b>${esc(e.why)}</div>`
+                     : `<div class="fb"><b style="color:var(--bad)">Неверно.</b>Правильно: Дт ${esc(e.dr)} ${fmt(e.sum)} / Кт ${esc(e.cr)} ${fmt(e.sum)}.<br>${esc(e.why)}</div>`;
+    }
+    h += `</div>`;
+  });
+  h += `<h3>Б. Переведите на русский</h3><div class="card">`;
+  les.transl.forEach((t,i)=>{
+    const v=A.b[i]||"", st = A.checked ? (checkTr(t,v)?"ok":"bad") : "";
+    h += `<div class="op ${st}" style="margin-bottom:8px"><div class="q">${esc(t.en)}</div><input type="text" data-b="${i}" value="${esc(v)}" autocomplete="off">`;
+    if(A.checked) h += st==="ok" ? `<div class="fb" style="color:var(--ok)">Верно.</div>` : `<div class="fb"><b style="color:var(--bad)">Неверно.</b>Правильно: ${esc(t.ans)}.</div>`;
+    h += `</div>`;
+  });
+  h += `</div>
+  <div class="row"><button class="btn" id="chk">Проверить</button>${A.checked?`<button class="btn light" id="again">Решить заново</button>`:""}</div>
+  <div id="res"></div>`;
+  if(A.checked){
+    const okA = les.entries.filter((e,i)=>checkEntry(e,A.a[i])).length, okB = les.transl.filter((t,i)=>checkTr(t,A.b[i])).length;
+    h += `<div class="card" style="margin-top:12px"><b>Результат:</b> проводки ${okA} из ${les.entries.length}, перевод ${okB} из ${les.transl.length}.
+      <p class="muted">Для подробного разбора откройте вкладку «Копия», нажмите «Скопировать ответы для проверки», вставьте в чат и напишите «проверь».</p></div>`;
+  }
+  V.innerHTML = h;
+  V.querySelectorAll("[data-a]").forEach(el=>{
+    const handler=()=>{ const i=+el.dataset.a; A.a[i]=A.a[i]||{}; A.a[i][el.dataset.f]= el.dataset.f==="sum" ? (el.value===""?"":Number(el.value)) : el.value; save(); };
+    el.onchange=handler; el.oninput=handler;
+  });
+  V.querySelectorAll("[data-b]").forEach(el=>{ el.oninput=()=>{ A.b[+el.dataset.b]=el.value; save(); }; });
+  document.getElementById("chk").onclick=()=>{
+    const empty = les.entries.some((e,i)=>!A.a[i]||!A.a[i].dr||!A.a[i].cr||A.a[i].sum===""||A.a[i].sum===undefined) || les.transl.some((t,i)=>!(A.b[i]||"").trim());
+    if(empty && !confirmBox()) return;
+    A.checked=true;
+    const all = les.entries.every((e,i)=>checkEntry(e,A.a[i])) && les.transl.every((t,i)=>checkTr(t,A.b[i]));
+    if(all) S.done[les.id]=true;
+    save(); rTask();
+  };
+  const ag=document.getElementById("again"); if(ag) ag.onclick=()=>{ A.checked=false; A.a=[]; A.b=[]; delete S.done[les.id]; save(); rTask(); };
+}
+let confirmArmed=false;
+function confirmBox(){
+  if(confirmArmed){ confirmArmed=false; return true; }
+  confirmArmed=true;
+  document.getElementById("res").innerHTML = `<div class="msg bad">Заполнены не все поля. Нажмите «Проверить» ещё раз, чтобы проверить как есть.</div>`;
+  return false;
+}
+
+/* ===================== ВКЛАДКА: СЧЕТА ===================== */
+function rRef(){
+  const list = ACCOUNTS.filter(a=>a[6] <= S.cur+1);
+  let h = `<h2>Американский счёт — российский счёт</h2>
+  <div class="legend">${Object.values(TYPES).map(t=>`<span class="${t.cls}">${t.ru}</span>`).join("")}</div>
+  <p class="muted">Справочник пополняется с каждым уроком. Сейчас в нём ${list.length} счетов.</p>`;
+  ["asset","liab","eq","rev","exp"].forEach(tp=>{
+    list.filter(a=>a[3]===tp).forEach(a=>{
+      h += `<div class="card ${TYPES[tp].cls}" style="border:none">
+        <div class="row" style="justify-content:space-between"><div><div class="en">${esc(a[0])}</div><div class="tr">${esc(a[1])}</div></div>
+        <button class="btn small" data-say="${esc(a[0])}">▶ Слушать</button></div>
+        <div style="margin-top:6px">${esc(a[2])}</div>
+        <div class="muted" style="margin-top:4px"><b>${TYPES[tp].ru}</b> · российский счёт: <b>${esc(a[4])}</b></div>
+        <div class="muted" style="margin-top:4px">${esc(a[5])}</div></div>`;
+    });
+  });
+  V.innerHTML = h;
+  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ if(synth) synth.cancel(); speak(b.dataset.say,0.85,null); });
+}
+
+/* ===================== ВКЛАДКА: КОПИЯ ===================== */
+function answersText(){
+  const les=L(), A=ans(les.id);
+  let t = `${les.title}\nЗадание А. Проводки\n`;
+  les.entries.forEach((e,i)=>{ const a=A.a[i]||{}; t+=`${i+1}. ${e.q}\n   Дт ${a.dr||"—"} / Кт ${a.cr||"—"} / сумма ${a.sum??"—"}\n`; });
+  t += `Задание Б. Перевод\n`;
+  les.transl.forEach((tr,i)=>{ t+=`${tr.en} — ${A.b[i]||"—"}\n`; });
+  return t;
+}
+function rCopy(){
+  V.innerHTML = `<h2>Копия и проверка</h2>
+  <div class="card">
+    <div class="tag">Проверка у Claude</div>
+    <div class="block"><div class="lbl">Что сделать</div>Скопировать ответы, вставить в чат с Claude, написать «проверь».</div>
+    <div class="block"><div class="lbl">Зачем</div>Получить разбор каждой ошибки и следующий урок.</div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="cp">Скопировать ответы для проверки</button></div>
+    <div id="cpMsg"></div>
+  </div>
+  <div class="card">
+    <div class="tag">Файл Excel</div>
+    <div class="block"><div class="lbl">Что сделать</div>Скачать файл и сохранить его у себя: в телефоне, на компьютере или в облаке.</div>
+    <div class="block"><div class="lbl">Что в файле</div>Справочник счетов · тренировка проводок с проверкой · пустой журнал для своих проводок · ваши ответы.</div>
+    <div class="block"><div class="lbl">Зачем</div>Тренироваться в Excel и хранить свои ответы независимо от телефона и от Claude.</div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="xl">Скачать файл Excel</button></div>
+    <div id="xlMsg"></div>
+  </div>
+  <div class="card">
+    <div class="tag">Восстановление</div>
+    <div class="block"><div class="lbl">Что сделать</div>Выбрать ранее скачанный файл Excel.</div>
+    <div class="block"><div class="lbl">Когда нужно</div>Новый телефон, очищен браузер или пропали отметки.</div>
+    <div class="row" style="margin-top:8px"><label class="btn light" for="rf">Восстановить из файла</label><input type="file" id="rf" accept=".xlsx" class="hidden"></div>
+    <div id="rfMsg"></div>
+  </div>
+  ${S.savedAt?`<p class="muted">Последняя копия: ${esc(S.savedAt)}</p>`:`<p class="muted">Копия ещё не сохранялась.</p>`}`;
+  document.getElementById("cp").onclick=async ()=>{
+    const t=answersText(), m=document.getElementById("cpMsg");
+    try{ await navigator.clipboard.writeText(t); m.innerHTML=`<div class="msg ok">Ответы скопированы. Вставьте их в чат с Claude и напишите «проверь».</div>`; }
+    catch(e){ m.innerHTML=`<div class="msg">Скопируйте текст вручную: нажмите на поле, выберите «Выбрать все» и «Скопировать».</div><textarea class="copybox" readonly>${esc(t)}</textarea>`; }
+  };
+  document.getElementById("xl").onclick=downloadXl;
+  document.getElementById("rf").onchange=restore;
+}
+
+/* ===================== EXCEL ===================== */
+async function buildWorkbook(){
+  const wb = new ExcelJS.Workbook();
+  wb.creator = "Американский учёт";
+  const head = (ws,row)=>{ row.font={bold:true}; row.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFDDE7F0"}}; row.alignment={vertical:"middle",wrapText:true}; };
+  const list = ACCOUNTS.filter(a=>a[6] <= S.cur+1);
+
+  /* Лист 1: Счета */
+  const s1 = wb.addWorksheet("Счета");
+  s1.columns=[{header:"Счёт (англ.)",width:24},{header:"Транскрипция",width:22},{header:"Перевод",width:32},{header:"Вид счёта",width:16},{header:"Российский счёт",width:16},{header:"Пояснение",width:60}];
+  head(s1,s1.getRow(1));
+  ["asset","liab","eq","rev","exp"].forEach(tp=>list.filter(a=>a[3]===tp).forEach(a=>{
+    const r=s1.addRow([a[0],a[1],a[2],TYPES[tp].ru,a[4],a[5]]);
+    r.eachCell(c=>{ c.fill={type:"pattern",pattern:"solid",fgColor:{argb:TYPES[tp].xl}}; c.alignment={vertical:"top",wrapText:true}; });
+    r.getCell(1).font={bold:true};
+  }));
+  s1.views=[{state:"frozen",ySplit:1}];
+  const nAcc = list.length + 1;
+  const listRef = `'Счета'!$A$2:$A$${nAcc}`;
+
+  /* Скрытый лист с правильными ответами */
+  const sk = wb.addWorksheet("_ответы",{state:"veryHidden"});
+
+  /* Лист 2: Тренировка проводок */
+  const s2 = wb.addWorksheet("Тренировка проводок");
+  s2.addRow(["Составьте проводку: выберите счета дебета и кредита из списка, впишите сумму. Результат появится справа."]);
+  s2.mergeCells("A1:G1"); s2.getRow(1).font={italic:true}; s2.getRow(1).height=30; s2.getCell("A1").alignment={wrapText:true,vertical:"middle"};
+  s2.addRow(["Урок","№","Операция","Дебет (Дт)","Кредит (Кт)","Сумма, $","Результат"]); head(s2,s2.getRow(2));
+  s2.columns.forEach((c,i)=>c.width=[8,5,52,24,24,12,14][i]);
+  let r=3, k=1;
+  LESSONS.slice(0,S.cur+1).forEach((les,li)=>les.entries.forEach((e,i)=>{
+    sk.getCell(k,1).value=e.dr; sk.getCell(k,2).value=e.cr; sk.getCell(k,3).value=e.sum;
+    s2.getCell(r,1).value=li+1; s2.getCell(r,2).value=i+1; s2.getCell(r,3).value=e.q; s2.getCell(r,3).alignment={wrapText:true,vertical:"top"};
+    ["D","E"].forEach(col=>{ s2.getCell(`${col}${r}`).dataValidation={type:"list",allowBlank:true,formulae:[listRef]}; s2.getCell(`${col}${r}`).fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFFFF8E6"}}; });
+    s2.getCell(`F${r}`).fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFFFF8E6"}}; s2.getCell(`F${r}`).numFmt="#,##0";
+    s2.getCell(`G${r}`).value={formula:`IF(OR(D${r}="",E${r}="",F${r}=""),"",IF(AND(D${r}='_ответы'!A${k},E${r}='_ответы'!B${k},F${r}='_ответы'!C${k}),"верно","неверно"))`};
+    r++; k++;
+  }));
+  s2.addConditionalFormatting({ref:`G3:G${r}`,rules:[
+    {type:"containsText",operator:"containsText",text:"неверно",style:{fill:{type:"pattern",pattern:"solid",bgColor:{argb:"FFFBE9E7"}},font:{color:{argb:"FFB3261E"},bold:true}}},
+    {type:"cellIs",operator:"equal",formulae:['"верно"'],style:{fill:{type:"pattern",pattern:"solid",bgColor:{argb:"FFE5F4EC"}},font:{color:{argb:"FF1E7A46"},bold:true}}}
+  ]});
+  s2.views=[{state:"frozen",ySplit:2}];
+
+  /* Лист 3: Пустой журнал */
+  const s3 = wb.addWorksheet("Журнал проводок");
+  s3.addRow(["General Journal (джена́рал джё́рнал) — журнал проводок. Каждая проводка: строка дебета, затем строка кредита."]);
+  s3.mergeCells("A1:E1"); s3.getRow(1).font={italic:true}; s3.getRow(1).height=30; s3.getCell("A1").alignment={wrapText:true,vertical:"middle"};
+  s3.addRow(["Date (дата)","Account (счёт)","Debit (дебет)","Credit (кредит)","Description (пояснение)"]); head(s3,s3.getRow(2));
+  s3.columns.forEach((c,i)=>c.width=[14,26,14,14,44][i]);
+  for(let i=3;i<=52;i++){
+    s3.getCell(`A${i}`).numFmt="dd.mm.yyyy";
+    s3.getCell(`B${i}`).dataValidation={type:"list",allowBlank:true,formulae:[listRef]};
+    s3.getCell(`C${i}`).numFmt="#,##0.00"; s3.getCell(`D${i}`).numFmt="#,##0.00";
+  }
+  s3.getCell("B53").value="Итого"; s3.getCell("B53").font={bold:true};
+  s3.getCell("C53").value={formula:"SUM(C3:C52)"}; s3.getCell("D53").value={formula:"SUM(D3:D52)"};
+  s3.getCell("C53").numFmt="#,##0.00"; s3.getCell("D53").numFmt="#,##0.00";
+  s3.getCell("E53").value={formula:`IF(C53=D53,"Дебет равен кредиту — верно","Дебет не равен кредиту — ищите ошибку")`};
+  s3.getRow(53).font={bold:true};
+  s3.views=[{state:"frozen",ySplit:2}];
+
+  /* Лист 4: Мои ответы */
+  const s4 = wb.addWorksheet("Мои ответы");
+  s4.addRow(["Урок","Задание","Мой ответ","Правильный ответ","Результат"]); head(s4,s4.getRow(1));
+  s4.columns.forEach((c,i)=>c.width=[8,46,40,40,12][i]);
+  LESSONS.slice(0,S.cur+1).forEach((les,li)=>{
+    const A=ans(les.id);
+    les.entries.forEach((e,i)=>{ const a=A.a[i]||{};
+      s4.addRow([li+1, e.q, a.dr?`Дт ${a.dr} / Кт ${a.cr||"—"} / ${a.sum??"—"}`:"—", `Дт ${e.dr} / Кт ${e.cr} / ${e.sum}`, A.checked?(checkEntry(e,a)?"верно":"неверно"):"не проверено"]); });
+    les.transl.forEach((t,i)=>{ s4.addRow([li+1, `Перевод: ${t.en}`, A.b[i]||"—", t.ans, A.checked?(checkTr(t,A.b[i])?"верно":"неверно"):"не проверено"]); });
+  });
+  s4.eachRow(row=>row.alignment={wrapText:true,vertical:"top"});
+
+  /* Служебный лист для восстановления */
+  const sd = wb.addWorksheet("_data",{state:"veryHidden"});
+  sd.getCell("A1").value = JSON.stringify(S);
+  return wb;
+}
+
+async function downloadXl(){
+  const m=document.getElementById("xlMsg");
+  if(typeof ExcelJS==="undefined"){ m.innerHTML=`<div class="msg bad">Не удалось подготовить файл. Обновите страницу и попробуйте снова.</div>`; return; }
+  m.innerHTML=`<div class="msg">Готовлю файл…</div>`;
+  const d=new Date(); const stamp=`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`;
+  S.savedAt = stamp + " " + String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  const wb = await buildWorkbook();
+  const buf = await wb.xlsx.writeBuffer();
+  const name = `Американский учёт ${stamp}.xlsx`;
+  let dl = null;
+  try{ if(window.claude && window.claude.use) dl = await Promise.race([window.claude.use("downloads"), new Promise(r=>setTimeout(()=>r(null),3000))]); }catch(e){ dl=null; }
+  if(dl){
+    try{ await dl.save({filename:name, data:new Blob([buf])}); save(); m.innerHTML=`<div class="msg ok">Файл сохранён.</div>`; rCopyStamp(); }
+    catch(e){ m.innerHTML = e && e.code==="declined" ? `<div class="msg">Сохранение отменено.</div>` : `<div class="msg bad">Не удалось сохранить файл. Попробуйте ещё раз.</div>`; }
+  } else {
+    const url=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+    const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000); save(); m.innerHTML=`<div class="msg ok">Файл скачан.</div>`;
+  }
+}
+function rCopyStamp(){ const p=V.querySelector("p.muted:last-of-type"); if(p) p.textContent="Последняя копия: "+S.savedAt; }
+
+async function restore(ev){
+  const m=document.getElementById("rfMsg"), f=ev.target.files[0]; if(!f) return;
+  try{
+    const wb=new ExcelJS.Workbook(); await wb.xlsx.load(await f.arrayBuffer());
+    const sd=wb.getWorksheet("_data"); const raw = sd && sd.getCell("A1").value;
+    if(!raw) throw 0;
+    const data=JSON.parse(String(raw));
+    if(!data || typeof data!=="object" || !data.answers) throw 0;
+    S=Object.assign({cur:0,answers:{},done:{},savedAt:null},data);
+    if(S.cur>=LESSONS.length) S.cur=LESSONS.length-1;
+    save(); m.innerHTML=`<div class="msg ok">Данные восстановлены из файла.</div>`;
+  }catch(e){ m.innerHTML=`<div class="msg bad">Это не файл копии из этого приложения. Выберите файл, скачанный кнопкой «Скачать файл Excel».</div>`; }
+  ev.target.value="";
+}
+
+go("theory");
+</script>
+</body>
+</html>
