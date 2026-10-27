@@ -2,15 +2,17 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>Bookkeeping — бухгалтерский учёт США</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#28425C">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bookkeeping">
 <style>
+
 @font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/spectral-cyrillic-600-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
 @font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 600; src:url(fonts/spectral-latin-600-normal.woff2) format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
 @font-face { font-family: 'Spectral'; font-style: normal; font-display: swap; font-weight: 700; src:url(fonts/spectral-cyrillic-700-normal.woff2) format('woff2'); unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116; }
@@ -43,132 +45,176 @@ h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:600;margin:0;text-wrap
 button,input,select,textarea{font-family:inherit;color:inherit}
 .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
 
-/* Шапка */
-.appbar{position:sticky;top:0;z-index:40;color:#fff;padding:calc(10px + env(safe-area-inset-top)) 16px 14px;
-  background:radial-gradient(circle at 86% -40%,rgba(255,255,255,.22),transparent 42%),linear-gradient(120deg,#22394F 0%,#28425C 45%,#3E6B8F 100%);
-  box-shadow:0 10px 28px rgba(30,51,72,.22)}
-.appbar .top{display:flex;align-items:center;gap:11px}
-.appbar svg{width:34px;height:34px;flex:none;filter:drop-shadow(0 3px 6px rgba(10,20,32,.35))}
-.appbar h1{font-size:21px;line-height:1.1;color:#fff;letter-spacing:.01em}
-.appbar .sub{font-size:12.5px;color:#E9D2A8;margin-top:1px;letter-spacing:.02em}
-.appbar .sub2{font-size:11.5px;color:rgba(220,230,240,.8);margin-top:1px}
-.appbar .saved{margin-left:auto;font-size:11.5px;color:rgba(220,230,240,.85);display:flex;align-items:center;gap:6px;white-space:nowrap}
-.appbar .saved i{width:7px;height:7px;border-radius:50%;background:#7FB795;box-shadow:0 0 0 3px rgba(127,183,149,.18)}
+:root{
+  --ground:#F3F6F9; --card:#fff; --soft:#F6F9FB;
+  --navy:#28425C; --accent:#3E6B8F; --accent-soft:#E6EEF5;
+  --ochre:#B08347; --ochre-soft:#F6EEE1;
+  --ink:#22303F; --ink2:#4A5D71; --ink3:#7C8DA0; --line:#D9E2EA; --line2:#E6ECF2;
+  --ok:#4B7F62; --ok-soft:#E6F0EA; --bad:#A85147; --bad-soft:#F8ECE5;
+  --t-asset:#3E6B8F; --t-liab:#B08347; --t-eq:#6F6A9C; --t-rev:#4B7F62; --t-exp:#A85147;
+  --top:calc(54px + env(safe-area-inset-top)); --bot:calc(68px + env(safe-area-inset-bottom));
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;overflow-x:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body{color:var(--ink);font-family:'Golos Text',system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;background:var(--ground);
+  padding:var(--top) 0 var(--bot)}
+h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:600;margin:0}
+button,input,select{font-family:inherit;color:inherit;font-size:17px}
+button{touch-action:manipulation}
 
-main{max-width:680px;margin:0 auto;padding:16px 14px 10px}
-h2{font-size:22px;margin:2px 2px 14px;color:var(--navy)}
-h3{font-size:17px;margin:20px 2px 10px;color:var(--navy)}
+/* Шапка — одна строка */
+.appbar{position:fixed;top:0;left:0;right:0;z-index:40;height:var(--top);padding:env(safe-area-inset-top) 16px 0;display:flex;align-items:center;gap:10px;color:#fff;
+  background:linear-gradient(110deg,#22394F 0%,#28425C 55%,#33597B 100%);box-shadow:0 4px 16px rgba(30,51,72,.18)}
+.appbar svg{width:26px;height:26px;flex:none}
+.appbar h1{font-size:20px;line-height:1;color:#fff}
+.appbar .where{font-size:14px;color:#E9D2A8;white-space:nowrap}
+.appbar .saved{margin-left:auto;width:9px;height:9px;border-radius:50%;background:#7FB795;box-shadow:0 0 0 4px rgba(127,183,149,.2)}
 
-/* Карточки: перелив сверху вниз, светлая кромка, три ступени тени */
-.card{background:linear-gradient(180deg,#FFFFFF 0%,#FBFCFE 100%);border:1px solid var(--line2);border-radius:20px;padding:16px 16px;margin-bottom:12px;
-  box-shadow:0 1px 2px rgba(28,43,58,.04),0 10px 26px -14px rgba(28,43,58,.22),inset 0 1px 0 rgba(255,255,255,.95);
-  animation:rise .38s ease both}
-.card:nth-child(2){animation-delay:.04s}.card:nth-child(3){animation-delay:.08s}.card:nth-child(4){animation-delay:.12s}.card:nth-child(5){animation-delay:.16s}.card:nth-child(6){animation-delay:.2s}
-@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.hero{position:relative;overflow:hidden;border-radius:22px;padding:18px 18px 16px;margin-bottom:14px;color:#fff;
-  background:linear-gradient(125deg,#28425C 0%,#3E6B8F 60%,#5A86A8 100%);box-shadow:0 14px 32px rgba(30,51,72,.24)}
-.hero:before{content:'';position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 65%)}
-.hero .k{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#E9D2A8}
-.hero .t{font-family:'Spectral',serif;font-size:22px;font-weight:600;line-height:1.2;margin-top:4px}
-.hero .bar{height:7px;border-radius:7px;background:rgba(255,255,255,.18);margin-top:14px;overflow:hidden}
-.hero .bar i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#D9B676,#B08347)}
-.hero .p{font-size:12.5px;color:rgba(230,238,245,.9);margin-top:6px}
-.muted{color:var(--ink3);font-size:14px}
-.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin-bottom:8px}
-.en{font-weight:600;color:var(--ink)}
-.tr{color:var(--accent);font-size:14.5px}
-.card p{margin:8px 0}
+main{max-width:600px;margin:0 auto;padding:16px 16px 20px}
+.screen-title{font-size:24px;color:var(--navy);margin:4px 2px 4px}
+.screen-sub{font-size:15px;color:var(--ink3);margin:0 2px 16px}
 
-table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px;border-radius:12px;overflow:hidden;border:1px solid var(--line2)}
-th,td{padding:8px 9px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line2)}
-tr:last-child td{border-bottom:0}
-th{background:var(--soft);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:600}
-td:last-child{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink2);word-spacing:-2px}
-th:nth-child(1),td:nth-child(1){width:36%}th:nth-child(2),td:nth-child(2){width:30%}
-.t-asset{background:var(--t-asset)} .t-liab{background:var(--t-liab)} .t-eq{background:var(--t-eq)} .t-rev{background:var(--t-rev)} .t-exp{background:var(--t-exp)}
+.card{background:var(--card);border:1px solid var(--line2);border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 1px 2px rgba(28,43,58,.04),0 10px 24px -16px rgba(28,43,58,.25)}
+.muted{color:var(--ink3);font-size:15px}
+.en{font-weight:600}
+.tr{color:var(--accent)}
+p{margin:0 0 10px}
+p:last-child{margin-bottom:0}
+.big{font-size:20px}
 
-/* Кнопки */
-.btn{border:0;border-radius:14px;cursor:pointer;font-weight:500;font-size:15px;padding:11px 16px;color:#fff;
-  background:linear-gradient(110deg,#28425C,#3E6B8F);box-shadow:0 8px 18px rgba(30,51,72,.22),inset 0 1px 0 rgba(255,255,255,.18);
-  transition:transform .16s ease,box-shadow .16s ease}
+/* Кнопки — от 52 px */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:16px;cursor:pointer;font-weight:600;font-size:17px;padding:0 18px;color:#fff;
+  background:linear-gradient(110deg,#28425C,#3E6B8F);box-shadow:0 8px 18px rgba(30,51,72,.2)}
 .btn:active{transform:scale(.985)}
-.btn.light{background:linear-gradient(180deg,#FFFFFF,#F3F7FB);color:var(--navy);border:1px solid var(--line);box-shadow:0 2px 6px rgba(28,43,58,.06)}
-.btn.gold{background:linear-gradient(110deg,#B08347,#C99A5B);box-shadow:0 8px 18px rgba(150,105,50,.24)}
-.btn.small{font-size:13px;padding:7px 11px;border-radius:11px}
-.btn:disabled{opacity:.5}
-.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.btn.light{background:#fff;color:var(--navy);border:1.5px solid var(--line);box-shadow:none}
+.btn:disabled{opacity:.45}
+.btns2{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:14px}
 
-/* Слова */
-.word{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line2);padding:11px 4px;border-radius:12px;transition:background .2s}
-.word:last-child{border-bottom:none}
-.word .txt{flex:1;min-width:0}
-.word.playing{background:var(--ochre-soft)}
-.word .btns{display:flex;flex-direction:column;gap:6px}
+/* Подсказка, сворачивается */
+.hint{border-radius:16px;background:var(--ochre-soft);color:#7A5A2C;margin-bottom:14px;overflow:hidden}
+.hint summary{list-style:none;cursor:pointer;min-height:50px;display:flex;align-items:center;gap:10px;padding:0 16px;font-weight:600;font-size:15.5px}
+.hint summary::-webkit-details-marker{display:none}
+.hint summary:after{content:'▾';margin-left:auto;transition:transform .2s}
+.hint[open] summary:after{transform:rotate(180deg)}
+.hint .in{padding:0 16px 14px;font-size:15.5px}
 
-/* Блоки «что сделать / данные / зачем» */
-.block{border-left:3px solid var(--ochre);padding:1px 0 1px 12px;margin:9px 0}
-.block .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--ochre);margin-bottom:1px}
+/* Раздел урока — свёрнутый блок */
+.sec{background:var(--card);border:1px solid var(--line2);border-radius:18px;margin-bottom:10px;box-shadow:0 1px 2px rgba(28,43,58,.04);overflow:hidden}
+.sec>button{width:100%;min-height:62px;border:0;background:none;display:flex;align-items:center;gap:12px;padding:0 16px;text-align:left;cursor:pointer;font-weight:600;font-size:17px;color:var(--ink)}
+.sec>button .no{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:14px}
+.sec>button:after{content:'▾';margin-left:auto;color:var(--ink3);transition:transform .2s}
+.sec.open>button:after{transform:rotate(180deg)}
+.sec.open>button .no{background:var(--navy);color:#fff}
+.sec .body{display:none;padding:0 18px 18px}
+.sec.open .body{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.types{display:grid;gap:8px;margin-bottom:12px}
+.ty{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:10px 12px;border-radius:12px;background:var(--soft);border-left:4px solid}
+.ty b{font-size:16px}.ty .tr{font-size:14px;grid-column:1}.ty i{font-style:normal;grid-column:2;grid-row:1;text-align:right;font-size:15px}
+.ty em{font-style:normal;grid-column:2;grid-row:2;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink3)}
+.ty.t-asset{border-color:var(--t-asset)}.ty.t-liab{border-color:var(--t-liab)}.ty.t-eq{border-color:var(--t-eq)}.ty.t-rev{border-color:var(--t-rev)}.ty.t-exp{border-color:var(--t-exp)}
+.rule{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.rule div{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:15px}
+.rule b{display:block;color:var(--navy);font-size:14px;margin-bottom:2px}
+.nums{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline}
+.nums span{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-weight:500}
+
+/* Прогресс */
+.progress{display:flex;align-items:center;gap:10px;margin:0 2px 14px}
+.progress .lbl{font-size:15px;color:var(--ink2);white-space:nowrap}
+.dots{display:flex;gap:6px;flex:1;justify-content:flex-end}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.done{background:var(--accent)}.dots i.now{background:var(--ochre);transform:scale(1.25)}
 
 /* Задание */
-.op{border:1px solid var(--line2);border-radius:16px;padding:13px;margin-bottom:10px;background:linear-gradient(180deg,#fff,#FAFCFE);box-shadow:0 1px 2px rgba(28,43,58,.04);animation:rise .38s ease both}
-.op.ok{border-color:#B9D3C3;background:linear-gradient(180deg,#F3F9F5,#E9F3ED)}
-.op.bad{border-color:#E3BFB8;background:linear-gradient(180deg,#FCF5F2,#F8ECE5)}
-.op .q{font-weight:600;margin-bottom:9px;line-height:1.4}
-.op .q b{font-family:'IBM Plex Mono',monospace;color:var(--ochre);margin-right:4px}
-.fld{display:grid;grid-template-columns:56px 1fr;gap:6px 8px;align-items:center;margin-bottom:7px}
-.fld label{font-size:13px;color:var(--ink3);font-weight:500}
-select,input[type=text],input[type=number]{width:100%;font-size:16px;padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);appearance:none;-webkit-appearance:none}
-select{background-image:linear-gradient(45deg,transparent 50%,#7C8DA0 50%),linear-gradient(135deg,#7C8DA0 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+.q{font-size:19px;font-weight:600;line-height:1.4;margin-bottom:18px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:14px;font-weight:600;color:var(--ink3);margin-bottom:6px;letter-spacing:.02em}
+select,input[type=text],input[type=number]{width:100%;min-height:54px;font-size:17px;padding:0 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,#7C8DA0 50%),linear-gradient(135deg,#7C8DA0 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
 input[type=number]{font-family:'IBM Plex Mono',monospace}
-select:focus,input:focus{outline:3px solid rgba(62,107,143,.18);border-color:var(--accent)}
-.fb{font-size:14px;margin-top:9px;line-height:1.45}
-.fb b{display:block}
-.score{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--ochre)}
+select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(62,107,143,.15)}
+.tr-row{margin-bottom:12px}
+.tr-row label{display:block;font-weight:600;margin-bottom:6px}
 
-.legend span{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;margin:0 5px 6px 0;color:var(--ink2)}
-.acc{border-radius:18px;padding:14px 15px;margin-bottom:10px;border:1px solid rgba(255,255,255,.7);box-shadow:0 1px 2px rgba(28,43,58,.04),0 8px 20px -14px rgba(28,43,58,.22),inset 0 1px 0 rgba(255,255,255,.8);animation:rise .38s ease both}
-.acc .num{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-weight:600}
+/* Итог */
+.score{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.score div{background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:14px;text-align:center}
+.score b{display:block;font-family:'IBM Plex Mono',monospace;font-size:30px;color:var(--ochre)}
+.score span{font-size:14px;color:var(--ink3)}
+.res{border-radius:16px;margin-bottom:8px;border:1px solid var(--line2);background:var(--card);overflow:hidden}
+.res>button{width:100%;min-height:58px;border:0;background:none;display:flex;align-items:center;gap:12px;padding:0 14px;text-align:left;font-size:16px;cursor:pointer;color:var(--ink)}
+.res .mk{flex:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+.res.ok .mk{background:var(--ok)}.res.bad .mk{background:var(--bad)}
+.res .body{display:none;padding:0 14px 14px 54px;font-size:15.5px;color:var(--ink2)}
+.res.open .body{display:block}
 
-.lesson-item{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line2);padding:11px 2px;cursor:pointer}
-.lesson-item:last-child{border-bottom:none}
-.lesson-item .n{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-weight:600;margin-right:8px}
-.st{font-size:11.5px;font-weight:600;border-radius:20px;padding:3px 10px;white-space:nowrap}
-.st.cur{background:var(--accent-soft);color:var(--accent)} .st.done{background:var(--ok-soft);color:var(--ok)} .st.wait{background:#EEF2F6;color:var(--ink3)}
-.note{background:linear-gradient(115deg,#FBF5EA,#F6EEE1);border:1px solid #EAD9BC;border-radius:16px;padding:11px 13px;font-size:14px;color:#7A5A2C;margin-bottom:12px}
-.msg{font-size:14px;margin-top:9px}
-.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+/* Слова */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#E7EDF3;border-radius:14px;padding:4px;margin-bottom:12px}
+.seg button{min-height:46px;border:0;border-radius:11px;background:none;font-weight:600;font-size:16px;color:var(--ink2);cursor:pointer}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(28,43,58,.1)}
+.grp{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin:18px 4px 8px}
+.wl{background:var(--card);border:1px solid var(--line2);border-radius:18px;overflow:hidden}
+.w{width:100%;min-height:68px;border:0;background:none;display:flex;align-items:center;gap:12px;padding:8px 14px;text-align:left;border-bottom:1px solid var(--line2);cursor:pointer}
+.w:last-child{border-bottom:0}
+.w .t{flex:1;min-width:0}
+.w .t b{display:block;font-size:17px}
+.w .t span{color:var(--accent);font-size:15px}
+.w .t i{font-style:normal;color:var(--ink3);font-size:14px;margin-left:6px}
+.w .pl{flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent-soft);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:16px}
+.w.playing{background:var(--ochre-soft)}.w.playing .pl{background:var(--ochre);color:#fff}
 
-/* Нижние вкладки: стеклянный фон, активная — объёмной плашкой */
-nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:2px;padding:7px 6px calc(7px + env(safe-area-inset-bottom));
-  background:rgba(250,252,254,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line2);box-shadow:0 -10px 28px rgba(28,43,58,.08)}
-nav button{flex:1;border:0;background:none;padding:6px 1px 5px;font-size:11.5px;font-weight:500;color:var(--ink2);border-radius:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .16s,color .16s}
-nav button .ic{font-size:19px;line-height:1;opacity:.75}
-nav button.on{color:var(--navy);font-weight:600;background:linear-gradient(180deg,#FFFFFF,#EAF1F7);box-shadow:0 4px 12px rgba(30,51,72,.12),inset 0 1px 0 #fff}
-nav button.on .ic{opacity:1;color:var(--ochre)}
+/* Счета */
+.acc{background:var(--card);border:1px solid var(--line2);border-radius:16px;margin-bottom:8px;overflow:hidden;border-left:5px solid}
+.acc.t-asset{border-left-color:var(--t-asset)}.acc.t-liab{border-left-color:var(--t-liab)}.acc.t-eq{border-left-color:var(--t-eq)}.acc.t-rev{border-left-color:var(--t-rev)}.acc.t-exp{border-left-color:var(--t-exp)}
+.acc>button{width:100%;min-height:64px;border:0;background:none;display:flex;align-items:center;gap:10px;padding:8px 14px;text-align:left;cursor:pointer;color:var(--ink)}
+.acc>button .t{flex:1;min-width:0}.acc>button b{display:block;font-size:17px}.acc>button .t>span{color:var(--accent);font-size:14.5px}
+.acc>button .ru{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-size:15px;white-space:nowrap}
+.acc .body{display:none;padding:0 14px 14px;font-size:15.5px;color:var(--ink2)}
+.acc.open .body{display:block}
+.acc .body .btn{margin-top:10px;min-height:48px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 2px 14px;font-size:14px;color:var(--ink2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+
+/* Ещё */
+.item{width:100%;min-height:60px;border:0;background:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 4px;border-bottom:1px solid var(--line2);font-size:16.5px;text-align:left;cursor:pointer;color:var(--ink)}
+.item:last-child{border-bottom:0}
+.item .n{font-family:'IBM Plex Mono',monospace;color:var(--ochre);margin-right:10px}
+.st{font-size:13px;font-weight:600;border-radius:20px;padding:4px 10px;white-space:nowrap}
+.st.cur{background:var(--accent-soft);color:var(--accent)}.st.done{background:var(--ok-soft);color:var(--ok)}.st.wait{background:#EEF2F6;color:var(--ink3)}
+.sec-h{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ochre);margin:0 0 10px}
+.msg{font-size:15px;margin-top:10px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+.note{background:var(--ochre-soft);border-radius:14px;padding:12px 14px;font-size:15px;color:#7A5A2C;margin-bottom:12px}
+textarea.copybox{width:100%;height:140px;font-size:14px;margin-top:10px;border-radius:12px;border:1px solid var(--line);padding:10px}
 .hidden{display:none}
-textarea.copybox{width:100%;height:120px;font-size:13px;margin-top:8px;border-radius:12px;border:1px solid var(--line);padding:8px}
+.sec .body.flat{padding:0}
+.sec .body.flat .wl{border:0;border-top:1px solid var(--line2);border-radius:0}
+.more-ok{width:100%;min-height:50px;border:1.5px dashed var(--line);border-radius:14px;background:none;color:var(--ink2);font-size:15.5px;font-weight:600;cursor:pointer;margin:2px 0 8px}
 
+/* Нижние вкладки */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;height:var(--bot);display:flex;padding:6px 6px env(safe-area-inset-bottom);
+  background:rgba(250,252,254,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line2)}
+nav button{flex:1;border:0;background:none;border-radius:14px;margin:0 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer}
+nav button .ic{font-size:22px;line-height:1}
+nav button.on{color:var(--navy);font-weight:700;background:var(--accent-soft)}
+nav button.on .ic{color:var(--ochre)}
 </style>
 </head>
 <body>
-<header class="appbar"><div class="top">
+<header class="appbar">
   <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0DAA8"/><stop offset="1" stop-color="#B08347"/></linearGradient></defs>
-  <rect x="9" y="16" width="46" height="7" rx="3.5" fill="url(#gg)"/><rect x="28.5" y="16" width="7" height="38" rx="3.5" fill="url(#gg)"/>
-  <text x="18" y="12" font-family="Golos Text,sans-serif" font-size="10" font-weight="700" fill="#F0DAA8" text-anchor="middle">Dr</text>
-  <text x="46" y="12" font-family="Golos Text,sans-serif" font-size="10" font-weight="700" fill="#F0DAA8" text-anchor="middle">Cr</text></svg>
-  <div><h1>Bookkeeping</h1><div class="sub">Бухгалтерский учёт США</div><div class="sub2" id="hdrSub">Урок 1</div></div>
-  <div class="saved"><i></i>Сохранено</div>
-</div></header>
+  <rect x="6" y="14" width="52" height="9" rx="4.5" fill="url(#gg)"/><rect x="27.5" y="14" width="9" height="44" rx="4.5" fill="url(#gg)"/></svg>
+  <h1>Bookkeeping</h1><span class="where" id="where">· Урок 1</span>
+  <i class="saved" title="Сохранено"></i>
+</header>
 <main id="view"></main>
 <nav id="nav">
-  <button data-v="plan"><span class="ic">▦</span>Уроки</button>
   <button data-v="theory"><span class="ic">✦</span>Урок</button>
   <button data-v="words"><span class="ic">♪</span>Слова</button>
   <button data-v="task"><span class="ic">✎</span>Задание</button>
   <button data-v="ref"><span class="ic">⇄</span>Счета</button>
-  <button data-v="copy"><span class="ic">⤓</span>Копия</button>
+  <button data-v="more"><span class="ic">≡</span>Ещё</button>
 </nav>
-
 <script src="exceljs.min.js"></script>
 <script>
 /* ===================== СОДЕРЖАНИЕ КУРСА ===================== */
@@ -197,43 +243,25 @@ const LESSONS = [
   {
     id:"l1",
     title:"Урок 1. Основы бухгалтерского учёта США",
-    theory:`
-<div class="card">
-  <div class="tag">1. Главное равенство</div>
-  <p><span class="en">Assets = Liabilities + Equity</span><br>
-  <span class="tr">э́сэтс = лайэби́литиз + э́квити</span><br>
-  Активы = Обязательства + Капитал</p>
-  <p class="muted">Это то же равенство актива и пассива баланса, что и в РСБУ.</p>
-</div>
-<div class="card">
-  <div class="tag">2. Пять видов счетов</div>
-  <table>
-    <tr><th>Вид</th><th>Перевод</th><th>Аналог в РСБУ</th></tr>
-    <tr class="t-asset"><td><span class="en">Assets</span><br><span class="tr">э́сэтс</span></td><td>Активы</td><td>01, 10, 50, 51, 62</td></tr>
-    <tr class="t-liab"><td><span class="en">Liabilities</span><br><span class="tr">лайэби́литиз</span></td><td>Обязательства</td><td>60, 66, 68, 70</td></tr>
-    <tr class="t-eq"><td><span class="en">Equity</span><br><span class="tr">э́квити</span></td><td>Капитал</td><td>80, 84</td></tr>
-    <tr class="t-rev"><td><span class="en">Revenue</span><br><span class="tr">рэ́вэнью</span></td><td>Доходы</td><td>90.1, 91.1</td></tr>
-    <tr class="t-exp"><td><span class="en">Expenses</span><br><span class="tr">икспэ́нсиз</span></td><td>Расходы</td><td>20, 26, 44, 91.2</td></tr>
-  </table>
-  <p><b>Главное отличие.</b> Доходы и расходы в американском учёте — самостоятельные счета. Они не проходят через 90 и 91, как у нас.</p>
-</div>
-<div class="card">
-  <div class="tag">3. Дебет и кредит</div>
-  <p><span class="en">Debit</span> <span class="tr">(дэ́бит)</span> — левая сторона, <span class="en">Credit</span> <span class="tr">(крэ́дит)</span> — правая. Логика та же, что в РСБУ.</p>
-  <p>Увеличиваются <b>по дебету</b>: Assets, Expenses.<br>
-  Увеличиваются <b>по кредиту</b>: Liabilities, Equity, Revenue.</p>
-  <p class="muted">Подсказка: дебет и кредит в каждой проводке всегда равны по сумме.</p>
-</div>
-<div class="card">
-  <div class="tag">4. Нумерация счетов</div>
-  <p>Единого плана счетов в США нет: каждая компания составляет свой. Обычная практика нумерации:</p>
-  <p>1000 — активы<br>2000 — обязательства<br>3000 — капитал<br>4000 — доходы<br>5000–6000 — расходы</p>
-</div>
-<div class="card">
-  <div class="tag">5. Счета урока</div>
-  <p>Cash, Accounts Receivable, Equipment, Accounts Payable, Owner's Equity, Retained Earnings, Service Revenue, Rent Expense.</p>
-  <p class="muted">Транскрипция, произношение и российские аналоги — во вкладках «Слова» и «Счета».</p>
-</div>`,
+    theory:[
+  {t:"Главное равенство", h:`<p class="big"><span class="en">Assets = Liabilities + Equity</span></p>
+   <p><span class="tr">э́сэтс = лайэби́литиз + э́квити</span><br>Активы = Обязательства + Капитал</p>
+   <p class="muted">То же равенство актива и пассива баланса, что и в РСБУ.</p>`},
+  {t:"Пять видов счетов", h:`<div class="types">
+   <div class="ty t-asset"><b>Assets</b><span class="tr">э́сэтс</span><i>Активы</i><em>01, 10, 50, 51, 62</em></div>
+   <div class="ty t-liab"><b>Liabilities</b><span class="tr">лайэби́литиз</span><i>Обязательства</i><em>60, 66, 68, 70</em></div>
+   <div class="ty t-eq"><b>Equity</b><span class="tr">э́квити</span><i>Капитал</i><em>80, 84</em></div>
+   <div class="ty t-rev"><b>Revenue</b><span class="tr">рэ́вэнью</span><i>Доходы</i><em>90.1, 91.1</em></div>
+   <div class="ty t-exp"><b>Expenses</b><span class="tr">икспэ́нсиз</span><i>Расходы</i><em>20, 26, 44, 91.2</em></div></div>
+   <p><b>Главное отличие.</b> Доходы и расходы — самостоятельные счета. Они не проходят через 90 и 91, как в РСБУ.</p>`},
+  {t:"Дебет и кредит", h:`<p><span class="en">Debit</span> <span class="tr">дэ́бит</span> — левая сторона.<br><span class="en">Credit</span> <span class="tr">крэ́дит</span> — правая сторона.</p>
+   <div class="rule"><div><b>Растут по дебету</b>Assets, Expenses</div><div><b>Растут по кредиту</b>Liabilities, Equity, Revenue</div></div>
+   <p class="muted">В каждой проводке дебет равен кредиту.</p>`},
+  {t:"Нумерация счетов", h:`<p>Единого плана счетов в США нет: каждая компания составляет свой. Обычная нумерация:</p>
+   <div class="nums"><span>1000</span>активы<span>2000</span>обязательства<span>3000</span>капитал<span>4000</span>доходы<span>5000–6000</span>расходы</div>`},
+  {t:"Счета урока", h:`<p>Cash · Accounts Receivable · Equipment · Accounts Payable · Owner's Equity · Retained Earnings · Service Revenue · Rent Expense</p>
+   <p class="muted">Произношение — во вкладке «Слова», российские аналоги — во вкладке «Счета».</p>`}
+],
     words:[
       {g:"Пять видов счетов", w:[["Assets","э́сэтс","активы"],["Liabilities","лайэби́литиз","обязательства"],["Equity","э́квити","капитал"],["Revenue","рэ́вэнью","доходы"],["Expenses","икспэ́нсиз","расходы"]]},
       {g:"Дебет и кредит", w:[["Debit","дэ́бит","дебет"],["Credit","крэ́дит","кредит"]]},
@@ -277,22 +305,22 @@ if(S.cur >= LESSONS.length) S.cur = LESSONS.length-1;
 
 /* ===================== ЗВУК ===================== */
 const synth = window.speechSynthesis || null;
-let voice = null;
+let voice = null, slow = false, stopAll = false;
 function pickVoice(){ if(!synth) return; const v = synth.getVoices();
   voice = v.find(x=>x.lang==="en-US" && /Samantha|Google US English|Aaron|Nicky/i.test(x.name)) || v.find(x=>x.lang==="en-US") || v.find(x=>x.lang && x.lang.startsWith("en")) || null; }
 if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
-let stopAll = false;
-function speak(text, rate, el){
+function speak(text, el){
   return new Promise(res=>{
     if(!synth){ res(); return; }
     try{
-      const u = new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=rate; if(voice) u.voice=voice;
+      const u = new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate= slow?0.55:0.9; if(voice) u.voice=voice;
       if(el) el.classList.add("playing");
       const done=()=>{ if(el) el.classList.remove("playing"); res(); };
       u.onend=done; u.onerror=done; synth.speak(u);
     }catch(e){ res(); }
   });
 }
+function hush(){ stopAll=true; if(synth) synth.cancel(); }
 
 /* ===================== ВСПОМОГАТЕЛЬНОЕ ===================== */
 const V = document.getElementById("view");
@@ -300,201 +328,180 @@ const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&
 const accNames = () => ACCOUNTS.filter(a=>a[6] <= S.cur+1).map(a=>a[0]).sort();
 const fmt = n => "$" + Number(n).toLocaleString("ru-RU");
 const L = () => LESSONS[S.cur];
+const shortTitle = () => L().title.replace(/^Урок \d+\. /,"");
+function checkEntry(e, a){ return !!a && a.dr===e.dr && a.cr===e.cr && Number(a.sum)===e.sum; }
+function checkTr(t, v){ v=(v||"").toLowerCase().replace(/ё/g,"е"); return t.keys.some(k=>v.includes(k.replace(/ё/g,"е"))); }
 
-let view = "theory";
+let view="theory", openSec=0, step=0, openRes=-1, openAcc=-1, openGrp=0, openMore=-1, showOk={a:false,b:false};
+const TR_PAGE=4;
 function go(v){
-  view = v;
+  view=v; hush();
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
-  document.getElementById("hdrSub").textContent = `Урок ${S.cur+1} из ${TOTAL_LESSONS} · пройдено ${Object.keys(S.done).length}`;
-  stopAll = true; if(synth) synth.cancel();
-  ({plan:rPlan, theory:rTheory, words:rWords, task:rTask, ref:rRef, copy:rCopy})[v]();
+  document.getElementById("where").textContent = "· Урок " + (S.cur+1);
+  ({theory:rTheory, words:rWords, task:rTask, ref:rRef, more:rMore})[v]();
   window.scrollTo(0,0);
 }
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
 
-/* ===================== ВКЛАДКА: УРОКИ ===================== */
-function rPlan(){
-  let h = `<h2>Уроки</h2><div class="card">`;
-  for(let i=0;i<TOTAL_LESSONS;i++){
-    const les = LESSONS[i];
-    let st, cls;
-    if(les && S.done[les.id]){ st="пройден"; cls="done"; }
-    else if(les){ st = i===S.cur ? "текущий" : "открыт"; cls="cur"; }
-    else { st="появится позже"; cls="wait"; }
-    const name = les ? les.title : `Урок ${i+1}`;
-    h += `<div class="lesson-item" data-i="${les?i:""}"><span><span class="n">${String(i+1).padStart(2,"0")}</span>${esc(les?les.title.replace(/^Урок \d+\. /,""):"Урок "+(i+1))}</span><span class="st ${cls}">${st}</span></div>`;
-  }
-  h += `</div><p class="muted">Новый урок появляется после проверки предыдущего. Уроки 1–10 — основы учёта, 11–20 — типовые операции и отчёты.</p>`;
-  V.innerHTML = h;
-  V.querySelectorAll(".lesson-item").forEach(el=>{ if(el.dataset.i!==""){ el.onclick=()=>{ S.cur=+el.dataset.i; save(); go("theory"); }; }});
-}
-
-/* ===================== ВКЛАДКА: УРОК ===================== */
+/* ===================== УРОК ===================== */
 function rTheory(){
-  const done=Object.keys(S.done).length, pct=Math.round(done/TOTAL_LESSONS*100);
-  V.innerHTML = `<div class="hero"><div class="k">Урок ${S.cur+1} из ${TOTAL_LESSONS}</div><div class="t">${esc(L().title.replace(/^Урок \d+\. /,""))}</div>
-  <div class="bar"><i style="width:${Math.max(pct,3)}%"></i></div><div class="p">Пройдено уроков: ${done} из ${TOTAL_LESSONS}</div></div>${L().theory}
-  <div class="row"><button class="btn" id="toWords">Дальше: слова</button></div>`;
-  document.getElementById("toWords").onclick=()=>go("words");
+  const secs=L().theory;
+  let h=`<h2 class="screen-title">${esc(shortTitle())}</h2><p class="screen-sub">Урок ${S.cur+1} из ${TOTAL_LESSONS} · ${secs.length} разделов</p>`;
+  secs.forEach((s,i)=>{ h+=`<div class="sec ${i===openSec?"open":""}"><button data-s="${i}"><span class="no">${i+1}</span>${esc(s.t)}</button><div class="body">${s.h}</div></div>`; });
+  h+=`<div style="margin-top:16px"><button class="btn" id="nx">Дальше: слова урока</button></div>`;
+  V.innerHTML=h;
+  V.querySelectorAll(".sec>button").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.s; openSec = openSec===i ? -1 : i;
+    V.querySelectorAll(".sec").forEach((el,k)=>el.classList.toggle("open",k===openSec));
+    if(openSec>=0) setTimeout(()=>{ const r=b.getBoundingClientRect(); if(r.top<70) window.scrollBy({top:r.top-70,behavior:"smooth"}); },10);
+  });
+  document.getElementById("nx").onclick=()=>go("words");
 }
 
-/* ===================== ВКЛАДКА: СЛОВА ===================== */
+/* ===================== СЛОВА ===================== */
 function rWords(){
-  let h = `<h2>Слова урока</h2>
-  <div class="note">Нажмите «Слушать» и повторите слово вслух. Если звука нет — выключите беззвучный режим переключателем на боковой стороне телефона.</div>
-  <div class="row" style="margin-bottom:12px"><button class="btn" id="all">▶ Слушать все</button></div>`;
-  const q=[];
-  L().words.forEach(g=>{
-    h += `<div class="card"><div class="tag">${esc(g.g)}</div>`;
-    g.w.forEach(([en,tr,ru])=>{
-      const id="w"+q.length; q.push([en,id]);
-      h += `<div class="word" id="${id}"><div class="txt"><div class="en">${esc(en)}</div><div class="tr">${esc(tr)}</div><div class="muted">${esc(ru)}</div></div>
-      <div class="btns"><button class="btn small" data-say="${esc(en)}" data-r="0.9" data-el="${id}">▶ Слушать</button><button class="btn small light" data-say="${esc(en)}" data-r="0.55" data-el="${id}">Медленно</button></div></div>`;
-    });
-    h += `</div>`;
+  const G=L().words;
+  let h=`<h2 class="screen-title">Слова урока</h2><p class="screen-sub">Нажмите на слово, чтобы услышать, и повторите вслух</p>
+  <div class="seg"><button data-sp="0" class="${slow?"":"on"}">Обычно</button><button data-sp="1" class="${slow?"on":""}">Медленно</button></div>
+  <button class="btn" id="all" style="margin-bottom:12px">▶ Слушать открытую группу</button>`;
+  if(!synth) h=`<div class="note">Этот браузер не произносит текст. Откройте приложение в Safari или Chrome.</div>`+h;
+  let k=0;
+  G.forEach((g,gi)=>{
+    h+=`<div class="sec ${gi===openGrp?"open":""}"><button data-g="${gi}"><span class="no">${g.w.length}</span>${esc(g.g)}</button><div class="body flat"><div class="wl">`;
+    g.w.forEach(([en,tr,ru])=>{ h+=`<button class="w" id="w${k++}" data-say="${esc(en)}" data-g="${gi}"><span class="t"><b>${esc(en)}</b><span>${esc(tr)}</span><i>${esc(ru)}</i></span><span class="pl">▶</span></button>`; });
+    h+=`</div></div></div>`;
   });
-  if(!synth) h = `<div class="note">Этот браузер не умеет произносить текст. Откройте приложение в Safari или Chrome.</div>` + h;
-  h += `<div class="row"><button class="btn" id="toTask">Дальше: задание</button></div>`;
-  V.innerHTML = h;
-  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ stopAll=true; if(synth) synth.cancel(); speak(b.dataset.say, +b.dataset.r, document.getElementById(b.dataset.el)); });
-  const all = document.getElementById("all");
-  all.onclick = async ()=>{
-    if(all.dataset.run==="1"){ stopAll=true; if(synth) synth.cancel(); return; }
+  h+=`<details class="hint" style="margin-top:12px"><summary>Нет звука?</summary><div class="in">Выключите беззвучный режим переключателем на боковой стороне телефона и прибавьте громкость.</div></details>
+  <button class="btn" id="nx">Дальше: задание</button>`;
+  V.innerHTML=h;
+  V.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{ slow = b.dataset.sp==="1"; V.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b)); });
+  V.querySelectorAll(".sec>button").forEach(b=>b.onclick=()=>{ hush(); const i=+b.dataset.g; openGrp=openGrp===i?-1:i;
+    V.querySelectorAll(".sec").forEach((el,j)=>el.classList.toggle("open",j===openGrp));
+    if(openGrp>=0) setTimeout(()=>{ const r=b.getBoundingClientRect(); if(r.top<70) window.scrollBy({top:r.top-70,behavior:"smooth"}); },10); });
+  V.querySelectorAll(".w").forEach(b=>b.onclick=()=>{ hush(); speak(b.dataset.say,b); });
+  const all=document.getElementById("all");
+  all.onclick=async()=>{
+    if(all.dataset.run==="1"){ hush(); return; }
+    if(openGrp<0){ openGrp=0; V.querySelectorAll(".sec").forEach((el,j)=>el.classList.toggle("open",j===0)); }
+    const q=[...V.querySelectorAll(`.w[data-g="${openGrp}"]`)];
     stopAll=false; all.dataset.run="1"; all.textContent="■ Остановить"; if(synth) synth.cancel();
-    for(const [en,id] of q){ if(stopAll) break; const el=document.getElementById(id); if(!el) break;
-      el.scrollIntoView({block:"center",behavior:"smooth"}); await speak(en,0.85,el); await new Promise(r=>setTimeout(r,700)); }
-    all.dataset.run="0"; all.textContent="▶ Слушать все";
+    for(const el of q){ if(stopAll) break; el.scrollIntoView({block:"center",behavior:"smooth"}); await speak(el.dataset.say,el); await new Promise(r=>setTimeout(r,700)); }
+    all.dataset.run="0"; all.textContent="▶ Слушать открытую группу";
   };
-  document.getElementById("toTask").onclick=()=>go("task");
+  document.getElementById("nx").onclick=()=>go("task");
 }
 
-/* ===================== ВКЛАДКА: ЗАДАНИЕ ===================== */
-function checkEntry(e, a){ return a && a.dr===e.dr && a.cr===e.cr && Number(a.sum)===e.sum; }
-function checkTr(t, v){ v=(v||"").toLowerCase().replace(/ё/g,"е"); return t.keys.some(k=>v.includes(k.replace(/ё/g,"е"))); }
-
+/* ===================== ЗАДАНИЕ: по одному шагу ===================== */
 function rTask(){
-  const les=L(), A=ans(les.id), names=accNames();
-  const opt = sel => `<option value="">— выберите счёт —</option>` + names.map(n=>`<option ${n===sel?"selected":""}>${esc(n)}</option>`).join("");
-  let h = `<h2>Задание</h2>
-  <div class="card">
-    <div class="block"><div class="lbl">Что сделать</div>Составьте проводки (задание А) и переведите слова (задание Б).</div>
-    <div class="block"><div class="lbl">Данные</div>Счёт дебета и счёт кредита — выбрать из списка.<br>Сумма — числом, без знака доллара.<br>Перевод — своими словами, по-русски.</div>
-    <div class="block"><div class="lbl">Зачем</div>Проверить, что логика дебета и кредита в американском учёте стала привычной.</div>
-  </div>
-  <h3>А. Проводки</h3>`;
-  les.entries.forEach((e,i)=>{
-    const a=A.a[i]||{}, st = A.checked ? (checkEntry(e,a)?"ok":"bad") : "";
-    h += `<div class="op ${st}"><div class="q"><b>${i+1}</b>${esc(e.q)}</div>
-      <div class="fld"><label>Дт</label><select data-a="${i}" data-f="dr">${opt(a.dr)}</select></div>
-      <div class="fld"><label>Кт</label><select data-a="${i}" data-f="cr">${opt(a.cr)}</select></div>
-      <div class="fld"><label>Сумма</label><input type="number" inputmode="numeric" data-a="${i}" data-f="sum" value="${a.sum??""}"></div>`;
-    if(A.checked){
-      h += st==="ok" ? `<div class="fb"><b style="color:var(--ok)">Верно.</b>${esc(e.why)}</div>`
-                     : `<div class="fb"><b style="color:var(--bad)">Неверно.</b>Правильно: Дт ${esc(e.dr)} ${fmt(e.sum)} / Кт ${esc(e.cr)} ${fmt(e.sum)}.<br>${esc(e.why)}</div>`;
-    }
-    h += `</div>`;
-  });
-  h += `<h3>Б. Переведите на русский</h3><div class="card">`;
-  les.transl.forEach((t,i)=>{
-    const v=A.b[i]||"", st = A.checked ? (checkTr(t,v)?"ok":"bad") : "";
-    h += `<div class="op ${st}" style="margin-bottom:8px"><div class="q">${esc(t.en)}</div><input type="text" data-b="${i}" value="${esc(v)}" autocomplete="off">`;
-    if(A.checked) h += st==="ok" ? `<div class="fb" style="color:var(--ok)">Верно.</div>` : `<div class="fb"><b style="color:var(--bad)">Неверно.</b>Правильно: ${esc(t.ans)}.</div>`;
-    h += `</div>`;
-  });
-  h += `</div>
-  <div class="row"><button class="btn" id="chk">Проверить</button>${A.checked?`<button class="btn light" id="again">Решить заново</button>`:""}</div>
-  <div id="res"></div>`;
-  if(A.checked){
-    const okA = les.entries.filter((e,i)=>checkEntry(e,A.a[i])).length, okB = les.transl.filter((t,i)=>checkTr(t,A.b[i])).length;
-    h += `<div class="card" style="margin-top:12px"><div class="tag">Результат</div><div class="row" style="gap:22px"><div><div class="score">${okA}/${les.entries.length}</div><div class="muted">проводки</div></div><div><div class="score">${okB}/${les.transl.length}</div><div class="muted">перевод</div></div></div>
-      <p class="muted">Для подробного разбора откройте вкладку «Копия», нажмите «Скопировать ответы для проверки», вставьте в чат и напишите «проверь».</p></div>`;
+  const les=L(), A=ans(les.id), n=les.entries.length, pages=Math.ceil(les.transl.length/TR_PAGE), total=n+pages;
+  if(A.checked) return rResult();
+  if(step>total-1) step=total-1;
+  const dots=Array.from({length:total},(_,i)=>`<i class="${i<step?"done":i===step?"now":""}"></i>`).join("");
+  let h=`<div class="progress"><span class="lbl">${step<n?`Проводка ${step+1} из ${n}`:`Перевод ${step-n+1} из ${pages}`}</span><div class="dots">${dots}</div></div>`;
+  if(step===0) h+=`<details class="hint"><summary>Как выполнять</summary><div class="in">Выберите счёт дебета и счёт кредита, впишите сумму без знака доллара. После проводок — перевод слов на двух экранах, затем проверка.</div></details>`;
+  if(step<n){
+    const e=les.entries[step], a=A.a[step]||{}, names=accNames();
+    const opt=sel=>`<option value="">Выберите счёт</option>`+names.map(x=>`<option ${x===sel?"selected":""}>${esc(x)}</option>`).join("");
+    h+=`<div class="card"><div class="q">${esc(e.q)}</div>
+      <div class="fld"><label>ДЕБЕТ (Дт)</label><select data-f="dr">${opt(a.dr)}</select></div>
+      <div class="fld"><label>КРЕДИТ (Кт)</label><select data-f="cr">${opt(a.cr)}</select></div>
+      <div class="fld"><label>СУММА, $</label><input type="number" inputmode="numeric" data-f="sum" value="${a.sum??""}" placeholder="0"></div></div>`;
+  } else {
+    h+=`<div class="card"><div class="q">Переведите на русский</div>`;
+    const p0=(step-n)*TR_PAGE; les.transl.slice(p0,p0+TR_PAGE).forEach((t,j)=>{ const i=p0+j; h+=`<div class="tr-row"><label>${esc(t.en)}</label><input type="text" data-b="${i}" value="${esc(A.b[i]||"")}" autocomplete="off" autocapitalize="off"></div>`; });
+    h+=`</div>`;
   }
-  V.innerHTML = h;
-  V.querySelectorAll("[data-a]").forEach(el=>{
-    const handler=()=>{ const i=+el.dataset.a; A.a[i]=A.a[i]||{}; A.a[i][el.dataset.f]= el.dataset.f==="sum" ? (el.value===""?"":Number(el.value)) : el.value; save(); };
-    el.onchange=handler; el.oninput=handler;
-  });
+  h+=`<div class="btns2"><button class="btn light" id="bk" ${step===0?"disabled":""}>Назад</button><button class="btn" id="fw">${step<total-1?"Далее":"Проверить"}</button></div><div id="m"></div>`;
+  V.innerHTML=h;
+  V.querySelectorAll("[data-f]").forEach(el=>{ const f=()=>{ A.a[step]=A.a[step]||{}; A.a[step][el.dataset.f]= el.dataset.f==="sum"?(el.value===""?"":Number(el.value)):el.value; save(); }; el.onchange=f; el.oninput=f; });
   V.querySelectorAll("[data-b]").forEach(el=>{ el.oninput=()=>{ A.b[+el.dataset.b]=el.value; save(); }; });
-  document.getElementById("chk").onclick=()=>{
+  document.getElementById("bk").onclick=()=>{ step--; rTask(); window.scrollTo(0,0); };
+  document.getElementById("fw").onclick=()=>{
+    if(step<total-1){ step++; rTask(); window.scrollTo(0,0); return; }
     const empty = les.entries.some((e,i)=>!A.a[i]||!A.a[i].dr||!A.a[i].cr||A.a[i].sum===""||A.a[i].sum===undefined) || les.transl.some((t,i)=>!(A.b[i]||"").trim());
-    if(empty && !confirmBox()) return;
+    const m=document.getElementById("m");
+    if(empty && m.dataset.warned!=="1"){ m.dataset.warned="1"; m.innerHTML=`<div class="msg bad">Заполнено не всё. Нажмите «Проверить» ещё раз, чтобы проверить как есть.</div>`; return; }
     A.checked=true;
-    const all = les.entries.every((e,i)=>checkEntry(e,A.a[i])) && les.transl.every((t,i)=>checkTr(t,A.b[i]));
-    if(all) S.done[les.id]=true;
-    save(); rTask();
+    if(les.entries.every((e,i)=>checkEntry(e,A.a[i])) && les.transl.every((t,i)=>checkTr(t,A.b[i]))) S.done[les.id]=true;
+    save(); openRes=-1; showOk={a:false,b:false}; rTask(); window.scrollTo(0,0);
   };
-  const ag=document.getElementById("again"); if(ag) ag.onclick=()=>{ A.checked=false; A.a=[]; A.b=[]; delete S.done[les.id]; save(); rTask(); };
 }
-let confirmArmed=false;
-function confirmBox(){
-  if(confirmArmed){ confirmArmed=false; return true; }
-  confirmArmed=true;
-  document.getElementById("res").innerHTML = `<div class="msg bad">Заполнены не все поля. Нажмите «Проверить» ещё раз, чтобы проверить как есть.</div>`;
-  return false;
+function rResult(){
+  const les=L(), A=ans(les.id);
+  const ea=les.entries.map((e,i)=>({ok:checkEntry(e,A.a[i]),
+     title:`${i+1}. ${e.q}`, body:(checkEntry(e,A.a[i])?"":`Ваш ответ: Дт ${esc((A.a[i]||{}).dr||"—")} / Кт ${esc((A.a[i]||{}).cr||"—")} / ${(A.a[i]||{}).sum??"—"}<br><b>Правильно: Дт ${esc(e.dr)} / Кт ${esc(e.cr)} / ${fmt(e.sum)}</b><br>`)+esc(e.why)}));
+  const eb=les.transl.map((t,i)=>({ok:checkTr(t,A.b[i]), title:t.en, body:`Ваш ответ: ${esc(A.b[i]||"—")}<br>Правильно: ${esc(t.ans)}`}));
+  const okA=ea.filter(x=>x.ok).length, okB=eb.filter(x=>x.ok).length;
+  let k=0;
+  const row=x=>{ const id=k++; return `<div class="res ${x.ok?"ok":"bad"} ${openRes===id?"open":""}"><button data-r="${id}"><span class="mk">${x.ok?"✓":"✕"}</span>${esc(x.title)}</button><div class="body">${x.body}</div></div>`; };
+  const group=(key,name,arr,ok)=>{
+    const bad=arr.filter(x=>!x.ok), good=arr.filter(x=>x.ok);
+    let g=`<div class="grp">${name} · ${ok} из ${arr.length}</div>`;
+    g+= bad.length ? bad.map(row).join("") : `<div class="note" style="background:var(--ok-soft);color:var(--ok)">Ошибок нет.</div>`;
+    if(good.length) g+=`<button class="more-ok" data-k="${key}">${showOk[key]?"Скрыть":"Показать"} верные ответы (${good.length}) ${showOk[key]?"▴":"▾"}</button>`+(showOk[key]?good.map(row).join(""):good.map(()=>{k++;return""}).join(""));
+    return g;
+  };
+  let h=`<h2 class="screen-title">Результат</h2><p class="screen-sub">Нажмите на строку, чтобы увидеть разбор</p>
+  <div class="score"><div><b>${okA}/${ea.length}</b><span>проводки</span></div><div><b>${okB}/${eb.length}</b><span>перевод</span></div></div>`;
+  h+=group("a","Проводки",ea,okA)+group("b","Перевод",eb,okB);
+  h+=`<div style="display:grid;gap:10px;margin-top:16px"><button class="btn" id="cp">Отправить ответы Claude на разбор</button><button class="btn light" id="ag">Решить заново</button></div><div id="cpMsg"></div>`;
+  V.innerHTML=h;
+  V.querySelectorAll(".res>button").forEach(b=>b.onclick=()=>{ const id=+b.dataset.r; openRes=openRes===id?-1:id; V.querySelectorAll(".res").forEach(el=>el.classList.toggle("open",+el.querySelector("button").dataset.r===openRes)); });
+  V.querySelectorAll(".more-ok").forEach(b=>b.onclick=()=>{ showOk[b.dataset.k]=!showOk[b.dataset.k]; const y=window.scrollY; rResult(); window.scrollTo(0,y); });
+  document.getElementById("cp").onclick=()=>copyAnswers(document.getElementById("cpMsg"));
+  document.getElementById("ag").onclick=()=>{ A.checked=false; A.a=[]; A.b=[]; delete S.done[les.id]; step=0; save(); rTask(); window.scrollTo(0,0); };
 }
 
-/* ===================== ВКЛАДКА: СЧЕТА ===================== */
+/* ===================== СЧЕТА ===================== */
 function rRef(){
-  const list = ACCOUNTS.filter(a=>a[6] <= S.cur+1);
-  let h = `<h2>Американский счёт — российский счёт</h2>
-  <div class="legend">${Object.values(TYPES).map(t=>`<span class="${t.cls}">${t.ru}</span>`).join("")}</div>
-  <p class="muted">Справочник пополняется с каждым уроком. Сейчас в нём ${list.length} счетов.</p>`;
-  ["asset","liab","eq","rev","exp"].forEach(tp=>{
-    list.filter(a=>a[3]===tp).forEach(a=>{
-      h += `<div class="acc ${TYPES[tp].cls}">
-        <div class="row" style="justify-content:space-between"><div><div class="en">${esc(a[0])}</div><div class="tr">${esc(a[1])}</div></div>
-        <button class="btn small" data-say="${esc(a[0])}">▶ Слушать</button></div>
-        <div style="margin-top:6px">${esc(a[2])}</div>
-        <div class="muted" style="margin-top:4px"><b>${TYPES[tp].ru}</b> · российский счёт: <span class="num">${esc(a[4])}</span></div>
-        <div class="muted" style="margin-top:4px">${esc(a[5])}</div></div>`;
-    });
-  });
-  V.innerHTML = h;
-  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ if(synth) synth.cancel(); speak(b.dataset.say,0.85,null); });
+  const list=ACCOUNTS.filter(a=>a[6] <= S.cur+1);
+  const col={asset:"var(--t-asset)",liab:"var(--t-liab)",eq:"var(--t-eq)",rev:"var(--t-rev)",exp:"var(--t-exp)"};
+  let h=`<h2 class="screen-title">Счета</h2><p class="screen-sub">Американский счёт и российский аналог. Нажмите на счёт, чтобы раскрыть</p>
+  <details class="hint"><summary>Что значат цвета</summary><div class="in"><div class="legend" style="margin:0">${Object.entries(TYPES).map(([k,t])=>`<span><i style="background:${col[k]}"></i>${t.ru}</span>`).join("")}</div></div></details>`;
+  let k=0;
+  ["asset","liab","eq","rev","exp"].forEach(tp=>list.filter(a=>a[3]===tp).forEach(a=>{ const id=k++;
+    h+=`<div class="acc t-${tp} ${openAcc===id?"open":""}"><button data-a="${id}"><span class="t"><b>${esc(a[0])}</b><span>${esc(a[1])}</span></span><span class="ru">${esc(a[4])}</span></button>
+    <div class="body"><b>${esc(a[2])}</b> · ${TYPES[tp].ru}<br>${esc(a[5])}<button class="btn light" data-say="${esc(a[0])}">▶ Слушать</button></div></div>`; }));
+  V.innerHTML=h;
+  V.querySelectorAll(".acc>button").forEach(b=>b.onclick=()=>{ const id=+b.dataset.a; openAcc=openAcc===id?-1:id; V.querySelectorAll(".acc").forEach((el,j)=>el.classList.toggle("open",j===openAcc)); });
+  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ hush(); speak(b.dataset.say,null); });
 }
 
-/* ===================== ВКЛАДКА: КОПИЯ ===================== */
+/* ===================== ЕЩЁ ===================== */
 function answersText(){
   const les=L(), A=ans(les.id);
-  let t = `${les.title}\nЗадание А. Проводки\n`;
+  let t=`${les.title}\nПроводки:\n`;
   les.entries.forEach((e,i)=>{ const a=A.a[i]||{}; t+=`${i+1}. ${e.q}\n   Дт ${a.dr||"—"} / Кт ${a.cr||"—"} / сумма ${a.sum??"—"}\n`; });
-  t += `Задание Б. Перевод\n`;
-  les.transl.forEach((tr,i)=>{ t+=`${tr.en} — ${A.b[i]||"—"}\n`; });
+  t+=`Перевод:\n`; les.transl.forEach((tr,i)=>{ t+=`${tr.en} — ${A.b[i]||"—"}\n`; });
   return t;
 }
-function rCopy(){
-  V.innerHTML = `<h2>Копия и проверка</h2>
-  <div class="card">
-    <div class="tag">Проверка у Claude</div>
-    <div class="block"><div class="lbl">Что сделать</div>Скопировать ответы, вставить в чат с Claude, написать «проверь».</div>
-    <div class="block"><div class="lbl">Зачем</div>Получить разбор каждой ошибки и следующий урок.</div>
-    <div class="row" style="margin-top:8px"><button class="btn" id="cp">Скопировать ответы для проверки</button></div>
-    <div id="cpMsg"></div>
-  </div>
-  <div class="card">
-    <div class="tag">Файл Excel</div>
-    <div class="block"><div class="lbl">Что сделать</div>Скачать файл и сохранить его у себя: в телефоне, на компьютере или в облаке.</div>
-    <div class="block"><div class="lbl">Что в файле</div>Справочник счетов · тренировка проводок с проверкой · пустой журнал для своих проводок · ваши ответы.</div>
-    <div class="block"><div class="lbl">Зачем</div>Тренироваться в Excel и хранить свои ответы независимо от телефона и от Claude.</div>
-    <div class="row" style="margin-top:8px"><button class="btn" id="xl">Скачать файл Excel</button></div>
-    <div id="xlMsg"></div>
-  </div>
-  <div class="card">
-    <div class="tag">Восстановление</div>
-    <div class="block"><div class="lbl">Что сделать</div>Выбрать ранее скачанный файл Excel.</div>
-    <div class="block"><div class="lbl">Когда нужно</div>Новый телефон, очищен браузер или пропали отметки.</div>
-    <div class="row" style="margin-top:8px"><label class="btn light" for="rf">Восстановить из файла</label><input type="file" id="rf" accept=".xlsx" class="hidden"></div>
-    <div id="rfMsg"></div>
-  </div>
-  ${S.savedAt?`<p class="muted">Последняя копия: ${esc(S.savedAt)}</p>`:`<p class="muted">Копия ещё не сохранялась.</p>`}`;
-  document.getElementById("cp").onclick=async ()=>{
-    const t=answersText(), m=document.getElementById("cpMsg");
-    try{ await navigator.clipboard.writeText(t); m.innerHTML=`<div class="msg ok">Ответы скопированы. Вставьте их в чат с Claude и напишите «проверь».</div>`; }
-    catch(e){ m.innerHTML=`<div class="msg">Скопируйте текст вручную: нажмите на поле, выберите «Выбрать все» и «Скопировать».</div><textarea class="copybox" readonly>${esc(t)}</textarea>`; }
-  };
+async function copyAnswers(m){
+  const t=answersText();
+  try{ await navigator.clipboard.writeText(t); m.innerHTML=`<div class="msg ok">Ответы скопированы. Вставьте их в чат с Claude и напишите «проверь».</div>`; }
+  catch(e){ m.innerHTML=`<div class="msg">Нажмите на поле, выберите «Выбрать все» и «Скопировать».</div><textarea class="copybox" readonly>${esc(t)}</textarea>`; }
+}
+function rMore(){
+  const done=Object.keys(S.done).length;
+  let lessons="";
+  for(let i=0;i<TOTAL_LESSONS;i++){ const les=LESSONS[i];
+    const st= les&&S.done[les.id] ? ["пройден","done"] : les ? [i===S.cur?"текущий":"открыт","cur"] : ["позже","wait"];
+    lessons+=`<button class="item" ${les?`data-i="${i}"`:"disabled"}><span><span class="n">${String(i+1).padStart(2,"0")}</span>${les?esc(les.title.replace(/^Урок \d+\. /,"")):"Урок "+(i+1)}</span><span class="st ${st[1]}">${st[0]}</span></button>`; }
+  const secs=[
+    ["▦",`Уроки · пройдено ${done} из ${TOTAL_LESSONS}`, lessons],
+    ["✓","Разбор у Claude", `<p class="muted">Скопируйте ответы, вставьте в чат с Claude и напишите «проверь».</p><button class="btn" id="cp">Скопировать ответы</button><div id="cpMsg"></div>`],
+    ["⤓","Файл Excel", `<p class="muted">Справочник счетов, тренировка проводок, пустой журнал и ваши ответы. Храните файл у себя — это ваша копия.</p><button class="btn" id="xl">Скачать файл Excel</button><div id="xlMsg"></div><p class="muted" style="margin-top:10px" id="stamp">${S.savedAt?"Последняя копия: "+esc(S.savedAt):"Копия ещё не сохранялась"}</p>`],
+    ["↺","Восстановление из файла", `<p class="muted">Новый телефон или пропали ответы — выберите ранее скачанный файл Excel.</p><label class="btn light" for="rf">Выбрать файл</label><input type="file" id="rf" accept=".xlsx" class="hidden"><div id="rfMsg"></div>`]
+  ];
+  let h=`<h2 class="screen-title">Ещё</h2><p class="screen-sub">Уроки курса, разбор и сохранение</p>`;
+  secs.forEach(([ic,t,body],i)=>{ h+=`<div class="sec ${i===openMore?"open":""}"><button data-m="${i}"><span class="no">${ic}</span>${t}</button><div class="body">${body}</div></div>`; });
+  V.innerHTML=h;
+  V.querySelectorAll(".sec>button").forEach(b=>b.onclick=()=>{ const i=+b.dataset.m; openMore=openMore===i?-1:i; V.querySelectorAll(".sec").forEach((el,j)=>el.classList.toggle("open",j===openMore)); });
+  V.querySelectorAll(".item[data-i]").forEach(b=>b.onclick=()=>{ S.cur=+b.dataset.i; save(); step=0; go("theory"); });
+  document.getElementById("cp").onclick=()=>copyAnswers(document.getElementById("cpMsg"));
   document.getElementById("xl").onclick=downloadXl;
   document.getElementById("rf").onchange=restore;
 }
+function rCopyStamp(){ const p=document.getElementById("stamp"); if(p) p.textContent="Последняя копия: "+S.savedAt; }
 
 /* ===================== EXCEL ===================== */
 async function buildWorkbook(){
@@ -596,7 +603,6 @@ async function downloadXl(){
     setTimeout(()=>URL.revokeObjectURL(url),5000); save(); m.innerHTML=`<div class="msg ok">Файл скачан.</div>`;
   }
 }
-function rCopyStamp(){ const p=V.querySelector("p.muted:last-of-type"); if(p) p.textContent="Последняя копия: "+S.savedAt; }
 
 async function restore(ev){
   const m=document.getElementById("rfMsg"), f=ev.target.files[0]; if(!f) return;
@@ -608,7 +614,7 @@ async function restore(ev){
     if(!data || typeof data!=="object" || !data.answers) throw 0;
     S=Object.assign({cur:0,answers:{},done:{},savedAt:null},data);
     if(S.cur>=LESSONS.length) S.cur=LESSONS.length-1;
-    save(); m.innerHTML=`<div class="msg ok">Данные восстановлены из файла.</div>`;
+    save(); step=0; m.innerHTML=`<div class="msg ok">Данные восстановлены из файла.</div>`;
   }catch(e){ m.innerHTML=`<div class="msg bad">Это не файл копии из этого приложения. Выберите файл, скачанный кнопкой «Скачать файл Excel».</div>`; }
   ev.target.value="";
 }
