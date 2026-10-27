@@ -111,7 +111,8 @@ p:last-child{margin-bottom:0}
 .types{display:grid;gap:8px;margin-bottom:12px}
 .ty{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:10px 12px;border-radius:12px;background:var(--soft);border-left:4px solid}
 .ty b{font-size:16px}.ty .tr{font-size:14px;grid-column:1}.ty i{font-style:normal;grid-column:2;grid-row:1;text-align:right;font-size:15px}
-.ty em{font-style:normal;grid-column:2;grid-row:2;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink3)}
+.ty em{font-style:normal;grid-column:1 / 3;grid-row:3;display:flex;justify-content:space-between;gap:8px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink2)}
+.ty em span:first-child{color:var(--accent)}.ty em span:last-child{color:var(--ochre)}
 .ty.t-asset{border-color:var(--t-asset)}.ty.t-liab{border-color:var(--t-liab)}.ty.t-eq{border-color:var(--t-eq)}.ty.t-rev{border-color:var(--t-rev)}.ty.t-exp{border-color:var(--t-exp)}
 .rule{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
 .rule div{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:15px}
@@ -169,7 +170,8 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .acc.t-asset{border-left-color:var(--t-asset)}.acc.t-liab{border-left-color:var(--t-liab)}.acc.t-eq{border-left-color:var(--t-eq)}.acc.t-rev{border-left-color:var(--t-rev)}.acc.t-exp{border-left-color:var(--t-exp)}
 .acc>button{width:100%;min-height:64px;border:0;background:none;display:flex;align-items:center;gap:10px;padding:8px 14px;text-align:left;cursor:pointer;color:var(--ink)}
 .acc>button .t{flex:1;min-width:0}.acc>button b{display:block;font-size:17px}.acc>button .t>span{color:var(--accent);font-size:14.5px}
-.acc>button .ru{font-family:'IBM Plex Mono',monospace;color:var(--ochre);font-size:15px;white-space:nowrap}
+.acc>button .nums2{display:flex;flex-direction:column;align-items:flex-end;gap:2px;font-family:'IBM Plex Mono',monospace;font-size:13.5px;white-space:nowrap}
+.acc>button .us{color:var(--accent)}.acc>button .ru{color:var(--ochre)}
 .acc .body{display:none;padding:0 14px 14px;font-size:15.5px;color:var(--ink2)}
 .acc.open .body{display:block}
 .acc .body .btn{margin-top:10px;min-height:48px}
@@ -238,14 +240,14 @@ const TYPES = {
 
 /* Справочник счетов: en, транскрипция, перевод, вид, российский счёт, пояснение, урок */
 const ACCOUNTS = [
-  ["Cash","кэш","Деньги (касса и банк)","asset","50, 51, 52","В США касса и расчётный счёт обычно учитываются в одной группе Cash. Отдельный счёт открывают на каждый банковский счёт.",1],
-  ["Accounts Receivable","эка́унтс риси́вэбл","Дебиторская задолженность покупателей","asset","62","Сокращённо A/R. Долг клиентов за отгруженные товары и оказанные услуги.",1],
-  ["Equipment","икви́пмэнт","Оборудование","asset","01","Часть основных средств. Износ учитывается на отдельном счёте, его разберём позже.",1],
-  ["Accounts Payable","эка́унтс пэ́йэбл","Задолженность поставщикам","liab","60","Сокращённо A/P. Наш долг поставщикам и подрядчикам.",1],
-  ["Owner's Equity","о́унэрз э́квити","Вложения собственника","eq","80","Для небольших компаний с одним владельцем. В корпорациях вместо него Common Stock — акционерный капитал.",1],
-  ["Retained Earnings","рите́йнд ё́рнингз","Нераспределённая прибыль","eq","84","Накопленная прибыль прошлых лет за вычетом выплат собственникам.",1],
-  ["Service Revenue","сё́рвис рэ́вэнью","Выручка от услуг","rev","90.1","В РСБУ выручка проходит через счёт 90. В США это сразу отдельный счёт дохода.",1],
-  ["Rent Expense","рэнт икспэ́нс","Расходы на аренду","exp","20, 26, 44","В РСБУ аренда относится на счета затрат по месту возникновения. В США — на отдельный счёт расходов по виду.",1]
+  ["Cash","кэш","Деньги (касса и банк)","asset","50, 51, 52","В США касса и расчётный счёт обычно учитываются в одной группе Cash. Отдельный счёт открывают на каждый банковский счёт.",1,"1000"],
+  ["Accounts Receivable","эка́унтс риси́вэбл","Дебиторская задолженность покупателей","asset","62","Сокращённо A/R. Долг клиентов за отгруженные товары и оказанные услуги.",1,"1200"],
+  ["Equipment","икви́пмэнт","Оборудование","asset","01","Часть основных средств. Износ учитывается на отдельном счёте, его разберём позже.",1,"1500"],
+  ["Accounts Payable","эка́унтс пэ́йэбл","Задолженность поставщикам","liab","60","Сокращённо A/P. Наш долг поставщикам и подрядчикам.",1,"2000"],
+  ["Owner's Equity","о́унэрз э́квити","Вложения собственника","eq","80","Для небольших компаний с одним владельцем. В корпорациях вместо него Common Stock — акционерный капитал.",1,"3000"],
+  ["Retained Earnings","рите́йнд ё́рнингз","Нераспределённая прибыль","eq","84","Накопленная прибыль прошлых лет за вычетом выплат собственникам.",1,"3200"],
+  ["Service Revenue","сё́рвис рэ́вэнью","Выручка от услуг","rev","90.1","В РСБУ выручка проходит через счёт 90. В США это сразу отдельный счёт дохода.",1,"4000"],
+  ["Rent Expense","рэнт икспэ́нс","Расходы на аренду","exp","20, 26, 44","В РСБУ аренда относится на счета затрат по месту возникновения. В США — на отдельный счёт расходов по виду.",1,"6100"],
 ];
 
 const LESSONS = [
@@ -257,11 +259,12 @@ const LESSONS = [
    <p><span class="tr">э́сэтс = лайэби́литиз + э́квити</span><br>Активы = Обязательства + Капитал</p>
    <p class="muted">То же равенство актива и пассива баланса, что и в РСБУ.</p>`},
   {t:"Пять видов счетов", h:`<div class="types">
-   <div class="ty t-asset"><b><button class="say" data-say="Assets">Assets<i>▶</i></button></b><span class="tr">э́сэтс</span><i>Активы</i><em>01, 10, 50, 51, 62</em></div>
-   <div class="ty t-liab"><b><button class="say" data-say="Liabilities">Liabilities<i>▶</i></button></b><span class="tr">лайэби́литиз</span><i>Обязательства</i><em>60, 66, 68, 70</em></div>
-   <div class="ty t-eq"><b><button class="say" data-say="Equity">Equity<i>▶</i></button></b><span class="tr">э́квити</span><i>Капитал</i><em>80, 84</em></div>
-   <div class="ty t-rev"><b><button class="say" data-say="Revenue">Revenue<i>▶</i></button></b><span class="tr">рэ́вэнью</span><i>Доходы</i><em>90.1, 91.1</em></div>
-   <div class="ty t-exp"><b><button class="say" data-say="Expenses">Expenses<i>▶</i></button></b><span class="tr">икспэ́нсиз</span><i>Расходы</i><em>20, 26, 44, 91.2</em></div></div>
+   <div class="ty t-asset"><b><button class="say" data-say="Assets">Assets<i>▶</i></button></b><span class="tr">э́сэтс</span><i>Активы</i><em><span>США 1000–1999</span><span>РСБУ 01, 10, 50, 51, 62</span></em></div>
+   <div class="ty t-liab"><b><button class="say" data-say="Liabilities">Liabilities<i>▶</i></button></b><span class="tr">лайэби́литиз</span><i>Обязательства</i><em><span>США 2000–2999</span><span>РСБУ 60, 66, 68, 70</span></em></div>
+   <div class="ty t-eq"><b><button class="say" data-say="Equity">Equity<i>▶</i></button></b><span class="tr">э́квити</span><i>Капитал</i><em><span>США 3000–3999</span><span>РСБУ 80, 84</span></em></div>
+   <div class="ty t-rev"><b><button class="say" data-say="Revenue">Revenue<i>▶</i></button></b><span class="tr">рэ́вэнью</span><i>Доходы</i><em><span>США 4000–4999</span><span>РСБУ 90.1, 91.1</span></em></div>
+   <div class="ty t-exp"><b><button class="say" data-say="Expenses">Expenses<i>▶</i></button></b><span class="tr">икспэ́нсиз</span><i>Расходы</i><em><span>США 5000–6999</span><span>РСБУ 20, 26, 44, 91.2</span></em></div></div>
+   <p class="muted">Номера США — типовой пример, как нумеруют в небольших компаниях и в QuickBooks. В каждой компании план счетов свой.</p>
    <p><b>Главное отличие.</b> Доходы и расходы — самостоятельные счета. Они не проходят через 90 и 91, как в РСБУ.</p>`},
   {t:"Дебет и кредит", h:`<p><button class="say" data-say="Debit">Debit<i>▶</i></button> <span class="tr">дэ́бит</span> — левая сторона.</p><p><button class="say" data-say="Credit">Credit<i>▶</i></button> <span class="tr">крэ́дит</span> — правая сторона.</p>
    <div class="rule"><div><b>Растут по дебету</b><button class="say" data-say="Assets">Assets<i>▶</i></button><button class="say" data-say="Expenses">Expenses<i>▶</i></button></div><div><b>Растут по кредиту</b><button class="say" data-say="Liabilities">Liabilities<i>▶</i></button><button class="say" data-say="Equity">Equity<i>▶</i></button><button class="say" data-say="Revenue">Revenue<i>▶</i></button></div></div>
@@ -467,11 +470,11 @@ function rResult(){
 function rRef(){
   const list=ACCOUNTS.filter(a=>a[6] <= S.cur+1);
   const col={asset:"var(--t-asset)",liab:"var(--t-liab)",eq:"var(--t-eq)",rev:"var(--t-rev)",exp:"var(--t-exp)"};
-  let h=`<h2 class="screen-title">Счета</h2><p class="screen-sub">Американский счёт и российский аналог. Нажмите на счёт, чтобы раскрыть</p>
+  let h=`<h2 class="screen-title">Счета</h2><p class="screen-sub">Номер США (типовой пример) и российский аналог. Нажмите на счёт, чтобы раскрыть</p>
   <details class="hint"><summary>Что значат цвета</summary><div class="in"><div class="legend" style="margin:0">${Object.entries(TYPES).map(([k,t])=>`<span><i style="background:${col[k]}"></i>${t.ru}</span>`).join("")}</div></div></details>`;
   let k=0;
   ["asset","liab","eq","rev","exp"].forEach(tp=>list.filter(a=>a[3]===tp).forEach(a=>{ const id=k++;
-    h+=`<div class="acc t-${tp} ${openAcc===id?"open":""}"><button data-a="${id}"><span class="t"><b>${esc(a[0])}</b><span>${esc(a[1])}</span></span><span class="ru">${esc(a[4])}</span></button>
+    h+=`<div class="acc t-${tp} ${openAcc===id?"open":""}"><button data-a="${id}"><span class="t"><b>${esc(a[0])}</b><span>${esc(a[1])}</span></span><span class="nums2"><span class="us">США ${esc(a[7]||"—")}</span><span class="ru">РСБУ ${esc(a[4])}</span></span></button>
     <div class="body"><b>${esc(a[2])}</b> · ${TYPES[tp].ru}<br>${esc(a[5])}<button class="btn light" data-say="${esc(a[0])}">▶ Слушать</button></div></div>`; }));
   V.innerHTML=h;
   V.querySelectorAll(".acc>button").forEach(b=>b.onclick=()=>{ const id=+b.dataset.a; openAcc=openAcc===id?-1:id; V.querySelectorAll(".acc").forEach((el,j)=>el.classList.toggle("open",j===openAcc)); });
@@ -522,10 +525,10 @@ async function buildWorkbook(){
 
   /* Лист 1: Счета */
   const s1 = wb.addWorksheet("Счета");
-  s1.columns=[{header:"Счёт (англ.)",width:24},{header:"Транскрипция",width:22},{header:"Перевод",width:32},{header:"Вид счёта",width:16},{header:"Российский счёт",width:16},{header:"Пояснение",width:60}];
+  s1.columns=[{header:"Счёт (англ.)",width:24},{header:"Транскрипция",width:22},{header:"Перевод",width:32},{header:"Вид счёта",width:16},{header:"Номер США (пример)",width:14},{header:"Российский счёт",width:16},{header:"Пояснение",width:60}];
   head(s1,s1.getRow(1));
   ["asset","liab","eq","rev","exp"].forEach(tp=>list.filter(a=>a[3]===tp).forEach(a=>{
-    const r=s1.addRow([a[0],a[1],a[2],TYPES[tp].ru,a[4],a[5]]);
+    const r=s1.addRow([a[0],a[1],a[2],TYPES[tp].ru,a[7]||"",a[4],a[5]]);
     r.eachCell(c=>{ c.fill={type:"pattern",pattern:"solid",fgColor:{argb:TYPES[tp].xl}}; c.alignment={vertical:"top",wrapText:true}; });
     r.getCell(1).font={bold:true};
   }));
