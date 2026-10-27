@@ -187,6 +187,15 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 .note{background:var(--ochre-soft);border-radius:14px;padding:12px 14px;font-size:15px;color:#7A5A2C;margin-bottom:12px}
 textarea.copybox{width:100%;height:140px;font-size:14px;margin-top:10px;border-radius:12px;border:1px solid var(--line);padding:10px}
 .hidden{display:none}
+.say{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:4px 11px;margin:3px 6px 3px 0;border:1px solid #D3E0EC;border-radius:11px;background:var(--accent-soft);color:var(--navy);font-weight:600;font-size:16px;cursor:pointer;vertical-align:middle;text-align:left}
+.say i{font-style:normal;font-size:11px;color:var(--ochre)}
+.say.big{font-size:19px;min-height:52px;padding:6px 14px}
+.say.playing{background:var(--ochre-soft);border-color:#E3CBA2}
+.ty b .say{margin:0 0 2px;min-height:36px}
+.rule .say{margin:4px 6px 0 0;font-size:15px;min-height:38px}
+.res .body .right{margin:8px 0 10px;padding:10px 12px;border-radius:12px;background:var(--soft)}
+.res .body .right>div{display:flex;align-items:center;gap:6px;margin-top:4px}
+.res .body .say{min-height:36px;font-size:15px;margin:4px 4px 4px 0}
 .sec .body.flat{padding:0}
 .sec .body.flat .wl{border:0;border-top:1px solid var(--line2);border-radius:0}
 .more-ok{width:100%;min-height:50px;border:1.5px dashed var(--line);border-radius:14px;background:none;color:var(--ink2);font-size:15.5px;font-weight:600;cursor:pointer;margin:2px 0 8px}
@@ -244,22 +253,22 @@ const LESSONS = [
     id:"l1",
     title:"Урок 1. Основы бухгалтерского учёта США",
     theory:[
-  {t:"Главное равенство", h:`<p class="big"><span class="en">Assets = Liabilities + Equity</span></p>
+  {t:"Главное равенство", h:`<p><button class="say big" data-say="Assets equal Liabilities plus Equity">Assets = Liabilities + Equity<i>▶</i></button></p>
    <p><span class="tr">э́сэтс = лайэби́литиз + э́квити</span><br>Активы = Обязательства + Капитал</p>
    <p class="muted">То же равенство актива и пассива баланса, что и в РСБУ.</p>`},
   {t:"Пять видов счетов", h:`<div class="types">
-   <div class="ty t-asset"><b>Assets</b><span class="tr">э́сэтс</span><i>Активы</i><em>01, 10, 50, 51, 62</em></div>
-   <div class="ty t-liab"><b>Liabilities</b><span class="tr">лайэби́литиз</span><i>Обязательства</i><em>60, 66, 68, 70</em></div>
-   <div class="ty t-eq"><b>Equity</b><span class="tr">э́квити</span><i>Капитал</i><em>80, 84</em></div>
-   <div class="ty t-rev"><b>Revenue</b><span class="tr">рэ́вэнью</span><i>Доходы</i><em>90.1, 91.1</em></div>
-   <div class="ty t-exp"><b>Expenses</b><span class="tr">икспэ́нсиз</span><i>Расходы</i><em>20, 26, 44, 91.2</em></div></div>
+   <div class="ty t-asset"><b><button class="say" data-say="Assets">Assets<i>▶</i></button></b><span class="tr">э́сэтс</span><i>Активы</i><em>01, 10, 50, 51, 62</em></div>
+   <div class="ty t-liab"><b><button class="say" data-say="Liabilities">Liabilities<i>▶</i></button></b><span class="tr">лайэби́литиз</span><i>Обязательства</i><em>60, 66, 68, 70</em></div>
+   <div class="ty t-eq"><b><button class="say" data-say="Equity">Equity<i>▶</i></button></b><span class="tr">э́квити</span><i>Капитал</i><em>80, 84</em></div>
+   <div class="ty t-rev"><b><button class="say" data-say="Revenue">Revenue<i>▶</i></button></b><span class="tr">рэ́вэнью</span><i>Доходы</i><em>90.1, 91.1</em></div>
+   <div class="ty t-exp"><b><button class="say" data-say="Expenses">Expenses<i>▶</i></button></b><span class="tr">икспэ́нсиз</span><i>Расходы</i><em>20, 26, 44, 91.2</em></div></div>
    <p><b>Главное отличие.</b> Доходы и расходы — самостоятельные счета. Они не проходят через 90 и 91, как в РСБУ.</p>`},
-  {t:"Дебет и кредит", h:`<p><span class="en">Debit</span> <span class="tr">дэ́бит</span> — левая сторона.<br><span class="en">Credit</span> <span class="tr">крэ́дит</span> — правая сторона.</p>
-   <div class="rule"><div><b>Растут по дебету</b>Assets, Expenses</div><div><b>Растут по кредиту</b>Liabilities, Equity, Revenue</div></div>
+  {t:"Дебет и кредит", h:`<p><button class="say" data-say="Debit">Debit<i>▶</i></button> <span class="tr">дэ́бит</span> — левая сторона.</p><p><button class="say" data-say="Credit">Credit<i>▶</i></button> <span class="tr">крэ́дит</span> — правая сторона.</p>
+   <div class="rule"><div><b>Растут по дебету</b><button class="say" data-say="Assets">Assets<i>▶</i></button><button class="say" data-say="Expenses">Expenses<i>▶</i></button></div><div><b>Растут по кредиту</b><button class="say" data-say="Liabilities">Liabilities<i>▶</i></button><button class="say" data-say="Equity">Equity<i>▶</i></button><button class="say" data-say="Revenue">Revenue<i>▶</i></button></div></div>
    <p class="muted">В каждой проводке дебет равен кредиту.</p>`},
   {t:"Нумерация счетов", h:`<p>Единого плана счетов в США нет: каждая компания составляет свой. Обычная нумерация:</p>
    <div class="nums"><span>1000</span>активы<span>2000</span>обязательства<span>3000</span>капитал<span>4000</span>доходы<span>5000–6000</span>расходы</div>`},
-  {t:"Счета урока", h:`<p>Cash · Accounts Receivable · Equipment · Accounts Payable · Owner's Equity · Retained Earnings · Service Revenue · Rent Expense</p>
+  {t:"Счета урока", h:`<p class="chips"><button class="say" data-say="Cash">Cash<i>▶</i></button><button class="say" data-say="Accounts Receivable">Accounts Receivable<i>▶</i></button><button class="say" data-say="Equipment">Equipment<i>▶</i></button><button class="say" data-say="Accounts Payable">Accounts Payable<i>▶</i></button><button class="say" data-say="Owner's Equity">Owner's Equity<i>▶</i></button><button class="say" data-say="Retained Earnings">Retained Earnings<i>▶</i></button><button class="say" data-say="Service Revenue">Service Revenue<i>▶</i></button><button class="say" data-say="Rent Expense">Rent Expense<i>▶</i></button></p>
    <p class="muted">Произношение — во вкладке «Слова», российские аналоги — во вкладке «Счета».</p>`}
 ],
     words:[
@@ -305,7 +314,8 @@ if(S.cur >= LESSONS.length) S.cur = LESSONS.length-1;
 
 /* ===================== ЗВУК ===================== */
 const synth = window.speechSynthesis || null;
-let voice = null, slow = false, stopAll = false;
+let voice = null, stopAll = false;
+let slow = (()=>{ try{ return localStorage.getItem("amer-uchet-slow")==="1"; }catch(e){ return false; } })();
 function pickVoice(){ if(!synth) return; const v = synth.getVoices();
   voice = v.find(x=>x.lang==="en-US" && /Samantha|Google US English|Aaron|Nicky/i.test(x.name)) || v.find(x=>x.lang==="en-US") || v.find(x=>x.lang && x.lang.startsWith("en")) || null; }
 if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
@@ -328,6 +338,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&
 const accNames = () => ACCOUNTS.filter(a=>a[6] <= S.cur+1).map(a=>a[0]).sort();
 const fmt = n => "$" + Number(n).toLocaleString("ru-RU");
 const L = () => LESSONS[S.cur];
+const sayBtn = t => `<button class="say" data-say="${esc(t)}">${esc(t)}<i>▶</i></button>`;
 const shortTitle = () => L().title.replace(/^Урок \d+\. /,"");
 function checkEntry(e, a){ return !!a && a.dr===e.dr && a.cr===e.cr && Number(a.sum)===e.sum; }
 function checkTr(t, v){ v=(v||"").toLowerCase().replace(/ё/g,"е"); return t.keys.some(k=>v.includes(k.replace(/ё/g,"е"))); }
@@ -342,6 +353,7 @@ function go(v){
   window.scrollTo(0,0);
 }
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+document.addEventListener("click",ev=>{ const el=ev.target.closest("[data-say]"); if(!el || el.id==="all") return; ev.stopPropagation(); hush(); speak(el.dataset.say, el); },true);
 
 /* ===================== УРОК ===================== */
 function rTheory(){
@@ -374,11 +386,10 @@ function rWords(){
   h+=`<details class="hint" style="margin-top:12px"><summary>Нет звука?</summary><div class="in">Выключите беззвучный режим переключателем на боковой стороне телефона и прибавьте громкость.</div></details>
   <button class="btn" id="nx">Дальше: задание</button>`;
   V.innerHTML=h;
-  V.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{ slow = b.dataset.sp==="1"; V.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b)); });
+  V.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{ slow = b.dataset.sp==="1"; try{ localStorage.setItem("amer-uchet-slow", slow?"1":"0"); }catch(e){} V.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b)); });
   V.querySelectorAll(".sec>button").forEach(b=>b.onclick=()=>{ hush(); const i=+b.dataset.g; openGrp=openGrp===i?-1:i;
     V.querySelectorAll(".sec").forEach((el,j)=>el.classList.toggle("open",j===openGrp));
     if(openGrp>=0) setTimeout(()=>{ const r=b.getBoundingClientRect(); if(r.top<70) window.scrollBy({top:r.top-70,behavior:"smooth"}); },10); });
-  V.querySelectorAll(".w").forEach(b=>b.onclick=()=>{ hush(); speak(b.dataset.say,b); });
   const all=document.getElementById("all");
   all.onclick=async()=>{
     if(all.dataset.run==="1"){ hush(); return; }
@@ -429,7 +440,7 @@ function rTask(){
 function rResult(){
   const les=L(), A=ans(les.id);
   const ea=les.entries.map((e,i)=>({ok:checkEntry(e,A.a[i]),
-     title:`${i+1}. ${e.q}`, body:(checkEntry(e,A.a[i])?"":`Ваш ответ: Дт ${esc((A.a[i]||{}).dr||"—")} / Кт ${esc((A.a[i]||{}).cr||"—")} / ${(A.a[i]||{}).sum??"—"}<br><b>Правильно: Дт ${esc(e.dr)} / Кт ${esc(e.cr)} / ${fmt(e.sum)}</b><br>`)+esc(e.why)}));
+     title:`${i+1}. ${e.q}`, body:(checkEntry(e,A.a[i])?"":`Ваш ответ: Дт ${esc((A.a[i]||{}).dr||"—")} / Кт ${esc((A.a[i]||{}).cr||"—")} / ${(A.a[i]||{}).sum??"—"}<br><div class="right"><b>Правильно:</b><div>Дт ${sayBtn(e.dr)}</div><div>Кт ${sayBtn(e.cr)}</div><div>Сумма <b>${fmt(e.sum)}</b></div></div>`)+esc(e.why)}));
   const eb=les.transl.map((t,i)=>({ok:checkTr(t,A.b[i]), title:t.en, body:`Ваш ответ: ${esc(A.b[i]||"—")}<br>Правильно: ${esc(t.ans)}`}));
   const okA=ea.filter(x=>x.ok).length, okB=eb.filter(x=>x.ok).length;
   let k=0;
@@ -464,7 +475,6 @@ function rRef(){
     <div class="body"><b>${esc(a[2])}</b> · ${TYPES[tp].ru}<br>${esc(a[5])}<button class="btn light" data-say="${esc(a[0])}">▶ Слушать</button></div></div>`; }));
   V.innerHTML=h;
   V.querySelectorAll(".acc>button").forEach(b=>b.onclick=()=>{ const id=+b.dataset.a; openAcc=openAcc===id?-1:id; V.querySelectorAll(".acc").forEach((el,j)=>el.classList.toggle("open",j===openAcc)); });
-  V.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>{ hush(); speak(b.dataset.say,null); });
 }
 
 /* ===================== ЕЩЁ ===================== */
